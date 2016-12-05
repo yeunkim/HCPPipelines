@@ -208,6 +208,7 @@ def run_task_fmri_analysis(**args):
         '--lvl2fsf={lvl2fsf} ' + \
         '--lowresmesh={lowresmesh} ' + \
         '--grayordinatesres="{grayordinatesres:s}" ' + \
+        '--origsmoothingFWHM="{origsmoothingFWHM}" ' + \
         '--confound={confound} ' + \
         '--finalsmoothingFWHM={finalsmoothingFWHM} ' + \
         '--temporalfilter={temporalfilter} ' + \
@@ -495,6 +496,7 @@ if args.analysis_level == "participant":
             for i in range(0,len(tasks)):
                 tasknumcheck = layout.get(task=tasks[i], subject=subject_label, type="bold",
                                           run=session, extensions=["nii.gz", "nii"])
+                print(tasknumcheck)
                 assert len(tasknumcheck) >= 2
 
             for task in set(tasks):
@@ -505,14 +507,14 @@ if args.analysis_level == "participant":
                     assert len(acqs) >= 2
                     acq = list(acqs)
 
-                    taskone = 'task-{0}_acq-{1}_run-{2}'.format(task, acq[0],session)
-                    tasktwo = 'task-{0}_acq-{1}_run-{2}'.format(task, acq[1], session)
-                    OutDir = '{0}/sub-{1}/MNINonLinear/Results/'.format(args.output, subject_label)
+                    taskone = 'task-{0}_acq-{1}_{2}'.format(task, acq[0],session)
+                    tasktwo = 'task-{0}_acq-{1}_{2}'.format(task, acq[1], session)
+                    OutDir = '{0}/sub-{1}/MNINonLinear/Results/'.format(args.output_dir, subject_label)
 
-                    LevelOneTasks= 'task-{0}_acq-{1}_run-{2}@_task-{3}_acq-{4}_run-{5}'.format(task,acq[0],session,task,acq[1],session)
-                    LevelOneFSFs= 'task-{0}_acq-{1}_run-{2}@_task-{3}_acq-{4}_run-{5}'.format(task,acq[0],session,task,acq[1],session)
-                    LevelTwoTask= 'task-{0}_run-{1}'.format(task, session)
-                    LevelTwoFSF= 'task-{0}_run-{1}'.format(task, session)
+                    LevelOneTasks= 'task-{0}_acq-{1}_{2}@_task-{3}_acq-{4}_{5}'.format(task,acq[0],session,task,acq[1],session)
+                    LevelOneFSFs= 'task-{0}_acq-{1}_{2}@_task-{3}_acq-{4}_{5}'.format(task,acq[0],session,task,acq[1],session)
+                    LevelTwoTask= 'task-{0}_{1}'.format(task, session)
+                    LevelTwoFSF= 'task-{0}_{1}'.format(task, session)
 
                     func_stages_dict = OrderedDict([('generateLevel1fsf', partial(generate_level1_fsf,
                                                                                   studyfolder=args.output_dir,
@@ -535,9 +537,9 @@ if args.analysis_level == "participant":
                                                     ('generateLevel2fsf', partial(generate_level1_fsf,
                                                                                   studyfolder=args.output_dir,
                                                                                   subject="sub-%s" % subject_label,
-                                                                                  taskname='task-{0}_run-{1}'.format(task,session),
+                                                                                  taskname='task-{0}_{1}'.format(task,session),
                                                                                   templatedir=TemplateDir,
-                                                                                  outdir='{0}/task-{1}_run-{2}'.format(OutDir,task,session),
+                                                                                  outdir='{0}/task-{1}_{2}'.format(OutDir,task,session),
                                                                                   n_cpus=args.n_cpus
                                                                                   )),
                                                     ('TaskfMRIAnalysis', partial(run_task_fmri_analysis,
@@ -549,6 +551,7 @@ if args.analysis_level == "participant":
                                                                                   lvl2fsf=LevelTwoFSF,
                                                                                   lowresmesh=LowResMesh,
                                                                                   grayordinatesres=grayordinatesres,
+                                                                                  origsmoothingFWHM=OriginalSmoothingFWHM,
                                                                                   confound=Confound,
                                                                                   finalsmoothingFWHM=FinalSmoothingFWHM,
                                                                                   temporalfilter=TemporalFilter,
@@ -582,7 +585,7 @@ if args.analysis_level == "participant":
 
         for session in numruns:
             acqs = set(layout.get(target='acquisition', return_type='id',
-                                  subject=subject_label, type='dwi',
+                                  subject=subject_label, type='dwi', run=session,
                                   extensions=["nii.gz", "nii"]))
             for acq in acqs:
                 y = [int(s) for s in acq[0:len(acq)] if s.isdigit()]
