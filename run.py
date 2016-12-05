@@ -176,7 +176,7 @@ def generate_level1_fsf(**args):
         '--studyfolder={studyfolder} ' + \
         '--subject={subject} ' + \
         '--taskname={taskname} ' + \
-        '--templatedir={templatedir} ' + \
+        '--templatedir={HCPPIPEDIR}/{templatedir} ' + \
         '--outdir={outdir} ' + \
         '--dir={dir}'
     cmd = cmd.format(**args)
