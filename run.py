@@ -66,7 +66,7 @@ def run_pre_freesurfer(**args):
     '--topupconfig="{HCPPIPEDIR_Config}/b02b0.cnf" ' + \
     '--printcom=""'
     cmd = cmd.format(**args)
-    # run(cmd, cwd=args["path"], env={"OMP_NUM_THREADS": str(args["n_cpus"])})
+    run(cmd, cwd=args["path"], env={"OMP_NUM_THREADS": str(args["n_cpus"])})
 
 def run_freesurfer(**args):
     args.update(os.environ)
@@ -90,8 +90,8 @@ def run_freesurfer(**args):
         shutil.copytree(os.path.join(os.environ["SUBJECTS_DIR"], "rh.EC_average"),
                         os.path.join(args["subjectDIR"], "rh.EC_average"))
 
-    # run(cmd, cwd=args["path"], env={"NSLOTS": str(args["n_cpus"]),
-    #                                 "OMP_NUM_THREADS": str(args["n_cpus"])})
+    run(cmd, cwd=args["path"], env={"NSLOTS": str(args["n_cpus"]),
+                                    "OMP_NUM_THREADS": str(args["n_cpus"])})
 
 def run_post_freesurfer(**args):
     args.update(os.environ)
@@ -109,7 +109,7 @@ def run_post_freesurfer(**args):
       '--regname="FS" ' + \
       '--printcom=""'
     cmd = cmd.format(**args)
-    # run(cmd, cwd=args["path"], env={"OMP_NUM_THREADS": str(args["n_cpus"])})
+    run(cmd, cwd=args["path"], env={"OMP_NUM_THREADS": str(args["n_cpus"])})
 
 def run_generic_fMRI_volume_processsing(**args):
     args.update(os.environ)
@@ -135,7 +135,7 @@ def run_generic_fMRI_volume_processsing(**args):
       '--biascorrection={biascorrection} ' + \
       '--mctype="MCFLIRT"'
     cmd = cmd.format(**args)
-    # run(cmd, cwd=args["path"], env={"OMP_NUM_THREADS": str(args["n_cpus"])})
+    run(cmd, cwd=args["path"], env={"OMP_NUM_THREADS": str(args["n_cpus"])})
 
 def run_generic_fMRI_surface_processsing(**args):
     print(args)
@@ -150,7 +150,7 @@ def run_generic_fMRI_surface_processsing(**args):
       '--grayordinatesres="{grayordinatesres:s}" ' + \
       '--regname="FS"'
     cmd = cmd.format(**args)
-    # run(cmd, cwd=args["path"], env={"OMP_NUM_THREADS": str(args["n_cpus"])})
+    run(cmd, cwd=args["path"], env={"OMP_NUM_THREADS": str(args["n_cpus"])})
 
 def run_diffusion_processsing(**args):
     # print(args)
@@ -167,7 +167,7 @@ def run_diffusion_processsing(**args):
       '--printcom=""'
     cmd = cmd.format(**args)
     print('\n',cmd, '\n')
-    # run(cmd, cwd=args["path"], env={"OMP_NUM_THREADS": str(args["n_cpus"])})
+    run(cmd, cwd=args["path"], env={"OMP_NUM_THREADS": str(args["n_cpus"])})
 
 def generate_level1_fsf(**args):
     print(args)
