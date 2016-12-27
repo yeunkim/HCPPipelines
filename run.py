@@ -172,7 +172,7 @@ def run_diffusion_processsing(**args):
 def generate_level1_fsf(**args):
     print(args)
     args.update(os.environ)
-    cmd = '{HCPPIPEDIR}/Examples/Scripts/generate_level_1_fsf_dev.sh ' + \
+    cmd = '{HCPPIPEDIR}/Examples/Scripts/generate_level1_fsf_dev.sh ' + \
         '--studyfolder={studyfolder} ' + \
         '--subject={subject} ' + \
         '--taskname={taskname} ' + \
@@ -186,12 +186,14 @@ def generate_level1_fsf(**args):
 def generate_level2_fsf(**args):
     print(args)
     args.update(os.environ)
-    cmd = '{HCPPIPEDIR}/Examples/Scripts/generate_level_2_fsf_dev.sh ' + \
+    cmd = '{HCPPIPEDIR}/Examples/Scripts/generate_level2_fsf_dev.sh ' + \
         '--studyfolder={studyfolder} ' + \
         '--subject={subject} ' + \
         '--taskname={taskname} ' + \
         '--templatedir={HCPPIPEDIR}/{templatedir} ' + \
-        '--outdir={outdir} '
+        '--outdir={outdir} ' + \
+        '--folderone={folderone} ' + \
+        '--foldertwo={foldertwo} '
     cmd = cmd.format(**args)
     print('\n', cmd, '\n')
     run(cmd, cwd=args["path"], env={"OMP_NUM_THREADS": str(args["n_cpus"])})
@@ -249,7 +251,7 @@ parser.add_argument('--stages', help='Which stages to run. Space separated list.
                                        'TaskfMRIAnalysis', 'generateLevel1fsf', 'generateLevel2fsf'],
                    default=['PreFreeSurfer', 'FreeSurfer', 'PostFreeSurfer',
                             'fMRIVolume', 'fMRISurface',
-                            'DiffusionPreprocessing', 'TaskfMRIAnalysis'])
+                            'DiffusionPreprocessing', 'TaskfMRIAnalysis', 'generateLevel1fsf', 'generateLevel1fsfb', 'generateLevel2fsf'])
 parser.add_argument('--license_key', help='FreeSurfer license key - letters and numbers after "*" in the email you received after registration. To register (for free) visit https://surfer.nmr.mgh.harvard.edu/registration.html',
                     required=True)
 parser.add_argument('-v', '--version', action='version',
@@ -511,12 +513,13 @@ if args.analysis_level == "participant":
                     tasktwo = 'task-{0}_acq-{1}_{2}'.format(task, acq[1], session)
                     OutDir = '{0}/sub-{1}/MNINonLinear/Results/'.format(args.output_dir, subject_label)
 
-                    LevelOneTasks= 'task-{0}_acq-{1}_{2}@_task-{3}_acq-{4}_{5}'.format(task,acq[0],session,task,acq[1],session)
-                    LevelOneFSFs= 'task-{0}_acq-{1}_{2}@_task-{3}_acq-{4}_{5}'.format(task,acq[0],session,task,acq[1],session)
+                    LevelOneTasks= 'task-{0}_acq-{1}_{2}@task-{3}_acq-{4}_{5}'.format(task,acq[0],session,task,acq[1],session)
+                    LevelOneFSFs= 'task-{0}_acq-{1}_{2}@task-{3}_acq-{4}_{5}'.format(task,acq[0],session,task,acq[1],session)
                     LevelTwoTask= 'task-{0}_{1}'.format(task, session)
                     LevelTwoFSF= 'task-{0}_{1}'.format(task, session)
 
                     func_stages_dict = OrderedDict([('generateLevel1fsf', partial(generate_level1_fsf,
+                                                                                  path=args.output_dir,
                                                                                   studyfolder=args.output_dir,
                                                                                   subject="sub-%s" % subject_label,
                                                                                   taskname=taskone,
@@ -525,7 +528,8 @@ if args.analysis_level == "participant":
                                                                                   dir=acq[0],
                                                                                   n_cpus=args.n_cpus
                                                                                   )),
-                                                    ('generateLevel1fsf', partial(generate_level1_fsf,
+                                                    ('generateLevel1fsfb', partial(generate_level1_fsf,
+                                                                                  path=args.output_dir,
                                                                                   studyfolder=args.output_dir,
                                                                                   subject="sub-%s" % subject_label,
                                                                                   taskname=tasktwo,
@@ -534,12 +538,15 @@ if args.analysis_level == "participant":
                                                                                   dir=acq[1],
                                                                                   n_cpus=args.n_cpus
                                                                                   )),
-                                                    ('generateLevel2fsf', partial(generate_level1_fsf,
+                                                    ('generateLevel2fsf', partial(generate_level2_fsf,
+                                                                                  path=args.output_dir,
                                                                                   studyfolder=args.output_dir,
                                                                                   subject="sub-%s" % subject_label,
                                                                                   taskname='task-{0}_{1}'.format(task,session),
                                                                                   templatedir=TemplateDir,
                                                                                   outdir='{0}/task-{1}_{2}'.format(OutDir,task,session),
+                                                                                  folderone=taskone,
+                                                                                  foldertwo=tasktwo,
                                                                                   n_cpus=args.n_cpus
                                                                                   )),
                                                     ('TaskfMRIAnalysis', partial(run_task_fmri_analysis,
