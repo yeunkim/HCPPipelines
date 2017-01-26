@@ -11,6 +11,7 @@ import subprocess
 from bids.grabbids import BIDSLayout
 from functools import partial
 from collections import OrderedDict
+import time
 
 def run(command, env={}, cwd=None):
     merged_env = os.environ
@@ -66,7 +67,11 @@ def run_pre_freesurfer(**args):
     '--topupconfig="{HCPPIPEDIR_Config}/b02b0.cnf" ' + \
     '--printcom=""'
     cmd = cmd.format(**args)
+    t = time.time()
     run(cmd, cwd=args["path"], env={"OMP_NUM_THREADS": str(args["n_cpus"])})
+    elapsed = time.time() - t
+    elapsed = elapsed / 60
+    os.sys.stdout.write("\nElapsed time for PreFreeSurfer is " + str(elapsed) + " minutes. \n")
 
 def run_freesurfer(**args):
     args.update(os.environ)
@@ -89,9 +94,12 @@ def run_freesurfer(**args):
     if not os.path.exists(os.path.join(args["subjectDIR"], "rh.EC_average")):
         shutil.copytree(os.path.join(os.environ["SUBJECTS_DIR"], "rh.EC_average"),
                         os.path.join(args["subjectDIR"], "rh.EC_average"))
-
+    t = time.time()
     run(cmd, cwd=args["path"], env={"NSLOTS": str(args["n_cpus"]),
                                     "OMP_NUM_THREADS": str(args["n_cpus"])})
+    elapsed = time.time() - t
+    elapsed = elapsed / 60
+    os.sys.stdout.write("\nElapsed time for FreeSurfer is " + str(elapsed) + " minutes. \n")
 
 def run_post_freesurfer(**args):
     args.update(os.environ)
@@ -109,7 +117,11 @@ def run_post_freesurfer(**args):
       '--regname="FS" ' + \
       '--printcom=""'
     cmd = cmd.format(**args)
+    t = time.time()
     run(cmd, cwd=args["path"], env={"OMP_NUM_THREADS": str(args["n_cpus"])})
+    elapsed = time.time() - t
+    elapsed = elapsed / 60
+    os.sys.stdout.write("\nElapsed time for PostFreeSurfer is " + str(elapsed) + " minutes. \n")
 
 def run_generic_fMRI_volume_processsing(**args):
     args.update(os.environ)
@@ -135,7 +147,11 @@ def run_generic_fMRI_volume_processsing(**args):
       '--biascorrection={biascorrection} ' + \
       '--mctype="MCFLIRT"'
     cmd = cmd.format(**args)
+    t = time.time()
     run(cmd, cwd=args["path"], env={"OMP_NUM_THREADS": str(args["n_cpus"])})
+    elapsed = time.time() - t
+    elapsed = elapsed / 60
+    os.sys.stdout.write("\nElapsed time for fMRIVolume is " + str(elapsed) + " minutes. \n")
 
 def run_generic_fMRI_surface_processsing(**args):
     print(args)
@@ -150,7 +166,11 @@ def run_generic_fMRI_surface_processsing(**args):
       '--grayordinatesres="{grayordinatesres:s}" ' + \
       '--regname="FS"'
     cmd = cmd.format(**args)
+    t = time.time()
     run(cmd, cwd=args["path"], env={"OMP_NUM_THREADS": str(args["n_cpus"])})
+    elapsed = time.time() - t
+    elapsed = elapsed / 60
+    os.sys.stdout.write("\nElapsed time for fMRISurface is " + str(elapsed) + " minutes. \n")
 
 def run_diffusion_processsing(**args):
     # print(args)
@@ -167,7 +187,11 @@ def run_diffusion_processsing(**args):
       '--printcom=""'
     cmd = cmd.format(**args)
     print('\n',cmd, '\n')
+    t = time.time()
     run(cmd, cwd=args["path"], env={"OMP_NUM_THREADS": str(args["n_cpus"])})
+    elapsed = time.time() - t
+    elapsed = elapsed / 60
+    os.sys.stdout.write("\nElapsed time for fMRISurface is " + str(elapsed) + " minutes. \n")
 
 def generate_level1_fsf(**args):
     print(args)
