@@ -191,7 +191,7 @@ def run_diffusion_processsing(**args):
     run(cmd, cwd=args["path"], env={"OMP_NUM_THREADS": str(args["n_cpus"])})
     elapsed = time.time() - t
     elapsed = elapsed / 60
-    os.sys.stdout.write("\nElapsed time for fMRISurface is " + str(elapsed) + " minutes. \n")
+    os.sys.stdout.write("\nElapsed time for DiffusionPreprocessing is " + str(elapsed) + " minutes. \n")
 
 def generate_level1_fsf(**args):
     print(args)
