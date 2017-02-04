@@ -268,7 +268,7 @@ parser.add_argument('--n_cpus', help='Number of CPUs/cores available to use.',
 parser.add_argument('--stages', help='Which stages to run. Space separated list.',
                    nargs="+", choices=['PreFreeSurfer', 'FreeSurfer',
                                        'PostFreeSurfer', 'fMRIVolume',
-                                       'fMRISurface', 'DiffusionPreprocessing'],
+                                       'fMRISurface', 'DiffusionPreprocessing', 'TaskfMRIAnalysis'],
                    default=['PreFreeSurfer', 'FreeSurfer', 'PostFreeSurfer',
                             'fMRIVolume', 'fMRISurface',
                             'DiffusionPreprocessing', 'TaskfMRIAnalysis'])
