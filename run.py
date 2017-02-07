@@ -12,6 +12,8 @@ from bids.grabbids import BIDSLayout
 from functools import partial
 from collections import OrderedDict
 import time
+from multiprocessing import Process, Pool
+import multiprocessing as mp
 
 def run(command, env={}, cwd=None):
     merged_env = os.environ
@@ -244,6 +246,11 @@ def run_task_fmri_analysis(**args):
     print('\n', cmd, '\n')
     # run(cmd, cwd=args["path"], env={"OMP_NUM_THREADS": str(args["n_cpus"])})
 
+def func_stages(stages_dict):
+    for stage, stage_func in stages_dict.iteritems():
+        if stage in args.stages:
+            stage_func()
+
 __version__ = open('/version').read()
 
 parser = argparse.ArgumentParser(description='HCP Pipelines BIDS App (T1w, T2w, fMRI)')
@@ -461,7 +468,7 @@ if args.analysis_level == "participant":
             # ERROR: label volume has a different volume space than data volume
 
 
-            func_stages_dict = OrderedDict([("fMRIVolume", partial(run_generic_fMRI_volume_processsing,
+            func_stages_dict= OrderedDict([("fMRIVolume", partial(run_generic_fMRI_volume_processsing,
                                                       path=args.output_dir,
                                                       subject="sub-%s"%subject_label,
                                                       fmriname=fmriname,
@@ -484,9 +491,10 @@ if args.analysis_level == "participant":
                                                        grayordinatesres=grayordinatesres,
                                                        lowresmesh=lowresmesh))
                                 ])
-            for stage, stage_func in func_stages_dict.iteritems():
-                if stage in args.stages:
-                    stage_func()
+            # for stage, stage_func in func_stages_dict.iteritems():
+            #     if stage in args.stages:
+                    # stage_func()
+        Process(target= func_stages, args=(func_stages_dict, )).start()
 
         # dwis = layout.get(subject=subject_label, type='dwi',
         #                                          extensions=["nii.gz", "nii"])
@@ -525,19 +533,29 @@ if args.analysis_level == "participant":
                 pos = "EMPTY"
                 neg = "EMPTY"
                 gdcoeffs = "None"
-                dwis = layout.get(subject=subject_label,
-                                  type='dwi', acquisition=dirnum, run=session,
-                                  extensions=["nii.gz", "nii"])
 
-                assert len(dwis) <= 2
-                for dwi in dwis:
-                    dwi = dwi.filename
-                    if "-" in layout.get_metadata(dwi)["PhaseEncodingDirection"]:
-                        neg = dwi
-                        # negData.append(neg)
-                    else:
-                        pos = dwi
-                        # posData.append(pos)
+                for d in set(diracqs):
+                    dwis = layout.get(subject=subject_label,
+                                      type='dwi', acquisition=d, run=session,
+                                      extensions=["nii.gz", "nii"])
+                    for dwi in dwis:
+                        dwi = dwi.filename
+                        if "-" in layout.get_metadata(dwi)["PhaseEncodingDirection"]:
+                            neg = dwi
+                            # negData.append(neg)
+                        else:
+                            pos = dwi
+                            # posData.append(pos)
+
+                # assert len(dwis) <= 2
+                # for dwi in dwis:
+                #     dwi = dwi.filename
+                #     if "-" in layout.get_metadata(dwi)["PhaseEncodingDirection"]:
+                #         neg = dwi
+                #         # negData.append(neg)
+                #     else:
+                #         pos = dwi
+                #         # posData.append(pos)
 
                 echospacing = layout.get_metadata(pos)["EffectiveEchoSpacing"] * 1000
                 dwi_stage_dict = OrderedDict([("DiffusionPreprocessing", partial(run_diffusion_processsing,
@@ -552,5 +570,7 @@ if args.analysis_level == "participant":
                                                                                  n_cpus=args.n_cpus))])
                 for stage, stage_func in dwi_stage_dict.iteritems():
                     if stage in args.stages:
-                        stage_func()
+                        # stage_func()
+                        Process(target=stage_func).start()
+
 
