@@ -573,6 +573,110 @@ if args.analysis_level == "participant":
                     stage_func()
         # Process(target= func_stages, args=(func_stages_dict, )).start()
 
+        # task fmris
+        tasks =[]
+        TemplateDir='/Examples/fsf_templates/'
+        FinalSmoothingFWHM="2"
+        LowResMesh="32"
+        GrayOrdinatesResolution="2"
+        OriginalSmoothingFWHM="2"
+        Confound="None"
+        TemporalFilter="200"
+        VolumeBasedProcessing="NO"
+        RegNames="NONE"
+        ParcellationList="NONE"
+        ParcellationFileList="NONE"
+
+        # numruns = set(layout.get(target='run', return_type='id',
+        #                          subject=subject_label, type='bold',
+        #                          extensions=["nii.gz", "nii"]))
+        #
+        # for session in numruns:
+        #     tfmris = [f.filename for f in layout.get(subject=subject_label,
+        #                                             type='bold', run=session,
+        #                                             extensions=["nii.gz", "nii"])]
+        #     for f in tfmris:
+        #         taskname = f.split("task-")[1].split("_")[0]
+        #         tasks.append(taskname)
+        #
+        #     ##check that there are two runs of each task (i.e. AP, PA)
+        #     for i in range(0,len(tasks)):
+        #         tasknumcheck = layout.get(task=tasks[i], subject=subject_label, type="bold",
+        #                                   run=session, extensions=["nii.gz", "nii"])
+        #         print(tasknumcheck)
+        #         # assert len(tasknumcheck) >= 2
+        #
+        #     for task in set(tasks):
+        #         if task is not "rest":
+        #             acqs = set(layout.get(target='acquisition', return_type='id', task=task,
+        #                                   subject=subject_label, type='bold', run=session,
+        #                                   extensions=["nii.gz", "nii"]))
+        #             # assert len(acqs) >= 2
+        #             acq = list(acqs)
+        #
+        #             taskone = 'task-{0}_acq-{1}_{2}'.format(task, acq[0],session)
+        #             tasktwo = 'task-{0}_acq-{1}_{2}'.format(task, acq[1], session)
+        #             OutDir = '{0}/sub-{1}/MNINonLinear/Results/'.format(args.output_dir, subject_label)
+        #
+        #             LevelOneTasks= 'task-{0}_acq-{1}_{2}@task-{3}_acq-{4}_{5}'.format(task,acq[0],session,task,acq[1],session)
+        #             LevelOneFSFs= 'task-{0}_acq-{1}_{2}@task-{3}_acq-{4}_{5}'.format(task,acq[0],session,task,acq[1],session)
+        #             LevelTwoTask= 'task-{0}_{1}'.format(task, session)
+        #             LevelTwoFSF= 'task-{0}_{1}'.format(task, session)
+        #
+        #             func_stages_dict = OrderedDict([('generateLevel1fsf', partial(generate_level1_fsf,
+        #                                                                           path=args.output_dir,
+        #                                                                           studyfolder=args.output_dir,
+        #                                                                           subject="sub-%s" % subject_label,
+        #                                                                           taskname=taskone,
+        #                                                                           templatedir=TemplateDir,
+        #                                                                           outdir='{0}/{1}'.format(OutDir,taskone),
+        #                                                                           dir=acq[0],
+        #                                                                           n_cpus=args.n_cpus
+        #                                                                           )),
+        #                                             ('generateLevel1fsfb', partial(generate_level1_fsf,
+        #                                                                           path=args.output_dir,
+        #                                                                           studyfolder=args.output_dir,
+        #                                                                           subject="sub-%s" % subject_label,
+        #                                                                           taskname=tasktwo,
+        #                                                                           templatedir=TemplateDir,
+        #                                                                           outdir='{0}/{1}'.format(OutDir,tasktwo),
+        #                                                                           dir=acq[1],
+        #                                                                           n_cpus=args.n_cpus
+        #                                                                           )),
+        #                                             ('generateLevel2fsf', partial(generate_level2_fsf,
+        #                                                                           path=args.output_dir,
+        #                                                                           studyfolder=args.output_dir,
+        #                                                                           subject="sub-%s" % subject_label,
+        #                                                                           taskname='task-{0}_{1}'.format(task,session),
+        #                                                                           templatedir=TemplateDir,
+        #                                                                           outdir='{0}/task-{1}_{2}'.format(OutDir,task,session),
+        #                                                                           folderone=taskone,
+        #                                                                           foldertwo=tasktwo,
+        #                                                                           n_cpus=args.n_cpus
+        #                                                                           )),
+        #                                             ('TaskfMRIAnalysis', partial(run_task_fmri_analysis,
+        #                                                                           path=args.output_dir,
+        #                                                                           subject="sub-%s" % subject_label,
+        #                                                                           lvl1tasks=LevelOneTasks,
+        #                                                                           lvl1fsfs=LevelOneFSFs,
+        #                                                                           lvl2task=LevelTwoTask,
+        #                                                                           lvl2fsf=LevelTwoFSF,
+        #                                                                           lowresmesh=LowResMesh,
+        #                                                                           grayordinatesres=grayordinatesres,
+        #                                                                           origsmoothingFWHM=OriginalSmoothingFWHM,
+        #                                                                           confound=Confound,
+        #                                                                           finalsmoothingFWHM=FinalSmoothingFWHM,
+        #                                                                           temporalfilter=TemporalFilter,
+        #                                                                           vba=VolumeBasedProcessing,
+        #                                                                           regname=RegNames,
+        #                                                                           parcellation=ParcellationList,
+        #                                                                           parcellationfile=ParcellationFileList,
+        #                                                                           n_cpus=args.n_cpus
+        #                                                                           ))])
+        #             for stage, stage_func in func_stages_dict.iteritems():
+        #                 if stage in args.stages:
+        #                     stage_func()
+
 
 
 
