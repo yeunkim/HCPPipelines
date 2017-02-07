@@ -424,78 +424,6 @@ if args.analysis_level == "participant":
             if stage in args.stages:
                 stage_func()
 
-        bolds = [f.filename for f in layout.get(subject=subject_label,
-                                                type='bold',
-                                                extensions=["nii.gz", "nii"])]
-        for fmritcs in bolds:
-            fmriname = "_".join(fmritcs.split("sub-")[-1].split("_")[1:-1]).split(".")[0]
-            assert fmriname
-
-            fmriscout = fmritcs.replace("_bold", "_sbref")
-            if not os.path.exists(fmriscout):
-                fmriscout = "NONE"
-
-            fieldmap_set = layout.get_fieldmap(fmritcs)
-            print(fieldmap_set)
-            if fieldmap_set and fieldmap_set["type"] == "epi":
-                SEPhaseNeg = None
-                SEPhasePos = None
-                for fieldmap in fieldmap_set["epi"]:
-                    enc_dir = layout.get_metadata(fieldmap)["PhaseEncodingDirection"]
-                    if "-" in enc_dir:
-                        SEPhaseNeg = fieldmap
-                    else:
-                        SEPhasePos = fieldmap
-                echospacing = layout.get_metadata(fmritcs)["EffectiveEchoSpacing"]
-                unwarpdir = layout.get_metadata(fmritcs)["PhaseEncodingDirection"]
-                unwarpdir = unwarpdir.replace("i","x").replace("j", "y").replace("k", "z")
-                if len(unwarpdir) == 2:
-                    unwarpdir = "-" + unwarpdir[0]
-                dcmethod = "TOPUP"
-                biascorrection = "SEBASED"
-            else:
-                SEPhaseNeg = "NONE"
-                SEPhasePos = "NONE"
-                echospacing = "NONE"
-                unwarpdir = "NONE"
-                dcmethod = "NONE"
-                biascorrection = "NONE"
-
-            zooms = nibabel.load(fmritcs).get_header().get_zooms()
-            fmrires = float(min(zooms[:3]))
-            fmrires = "2" # https://github.com/Washington-University/Pipelines/blob/637b35f73697b77dcb1d529902fc55f431f03af7/fMRISurface/scripts/SubcorticalProcessing.sh#L43
-            # While running '/usr/bin/wb_command -cifti-create-dense-timeseries /scratch/users/chrisgor/hcp_output2/sub-100307/MNINonLinear/Results/EMOTION/EMOTION_temp_subject.dtseries.nii -volume /scratch/users/chrisgor/hcp_output2/sub-100307/MNINonLinear/Results/EMOTION/EMOTION.nii.gz /scratch/users/chrisgor/hcp_output2/sub-100307/MNINonLinear/ROIs/ROIs.2.nii.gz':
-            # ERROR: label volume has a different volume space than data volume
-
-
-            func_stages_dict= OrderedDict([("fMRIVolume", partial(run_generic_fMRI_volume_processsing,
-                                                      path=args.output_dir,
-                                                      subject="sub-%s"%subject_label,
-                                                      fmriname=fmriname,
-                                                      fmritcs=fmritcs,
-                                                      fmriscout=fmriscout,
-                                                      SEPhaseNeg=SEPhaseNeg,
-                                                      SEPhasePos=SEPhasePos,
-                                                      echospacing=echospacing,
-                                                      unwarpdir=unwarpdir,
-                                                      fmrires=fmrires,
-                                                      dcmethod=dcmethod,
-                                                      biascorrection=biascorrection,
-                                                      n_cpus=args.n_cpus)),
-                                ("fMRISurface", partial(run_generic_fMRI_surface_processsing,
-                                                       path=args.output_dir,
-                                                       subject="sub-%s"%subject_label,
-                                                       fmriname=fmriname,
-                                                       fmrires=fmrires,
-                                                       n_cpus=args.n_cpus,
-                                                       grayordinatesres=grayordinatesres,
-                                                       lowresmesh=lowresmesh))
-                                ])
-            # for stage, stage_func in func_stages_dict.iteritems():
-            #     if stage in args.stages:
-                    # stage_func()
-        Process(target= func_stages, args=(func_stages_dict, )).start()
-
         # dwis = layout.get(subject=subject_label, type='dwi',
         #                                          extensions=["nii.gz", "nii"])
 
@@ -572,5 +500,79 @@ if args.analysis_level == "participant":
                     if stage in args.stages:
                         # stage_func()
                         Process(target=stage_func).start()
+
+        bolds = [f.filename for f in layout.get(subject=subject_label,
+                                                type='bold',
+                                                extensions=["nii.gz", "nii"])]
+        for fmritcs in bolds:
+            fmriname = "_".join(fmritcs.split("sub-")[-1].split("_")[1:-1]).split(".")[0]
+            assert fmriname
+
+            fmriscout = fmritcs.replace("_bold", "_sbref")
+            if not os.path.exists(fmriscout):
+                fmriscout = "NONE"
+
+            fieldmap_set = layout.get_fieldmap(fmritcs)
+            print(fieldmap_set)
+            if fieldmap_set and fieldmap_set["type"] == "epi":
+                SEPhaseNeg = None
+                SEPhasePos = None
+                for fieldmap in fieldmap_set["epi"]:
+                    enc_dir = layout.get_metadata(fieldmap)["PhaseEncodingDirection"]
+                    if "-" in enc_dir:
+                        SEPhaseNeg = fieldmap
+                    else:
+                        SEPhasePos = fieldmap
+                echospacing = layout.get_metadata(fmritcs)["EffectiveEchoSpacing"]
+                unwarpdir = layout.get_metadata(fmritcs)["PhaseEncodingDirection"]
+                unwarpdir = unwarpdir.replace("i","x").replace("j", "y").replace("k", "z")
+                if len(unwarpdir) == 2:
+                    unwarpdir = "-" + unwarpdir[0]
+                dcmethod = "TOPUP"
+                biascorrection = "SEBASED"
+            else:
+                SEPhaseNeg = "NONE"
+                SEPhasePos = "NONE"
+                echospacing = "NONE"
+                unwarpdir = "NONE"
+                dcmethod = "NONE"
+                biascorrection = "NONE"
+
+            zooms = nibabel.load(fmritcs).get_header().get_zooms()
+            fmrires = float(min(zooms[:3]))
+            fmrires = "2" # https://github.com/Washington-University/Pipelines/blob/637b35f73697b77dcb1d529902fc55f431f03af7/fMRISurface/scripts/SubcorticalProcessing.sh#L43
+            # While running '/usr/bin/wb_command -cifti-create-dense-timeseries /scratch/users/chrisgor/hcp_output2/sub-100307/MNINonLinear/Results/EMOTION/EMOTION_temp_subject.dtseries.nii -volume /scratch/users/chrisgor/hcp_output2/sub-100307/MNINonLinear/Results/EMOTION/EMOTION.nii.gz /scratch/users/chrisgor/hcp_output2/sub-100307/MNINonLinear/ROIs/ROIs.2.nii.gz':
+            # ERROR: label volume has a different volume space than data volume
+
+
+            func_stages_dict= OrderedDict([("fMRIVolume", partial(run_generic_fMRI_volume_processsing,
+                                                      path=args.output_dir,
+                                                      subject="sub-%s"%subject_label,
+                                                      fmriname=fmriname,
+                                                      fmritcs=fmritcs,
+                                                      fmriscout=fmriscout,
+                                                      SEPhaseNeg=SEPhaseNeg,
+                                                      SEPhasePos=SEPhasePos,
+                                                      echospacing=echospacing,
+                                                      unwarpdir=unwarpdir,
+                                                      fmrires=fmrires,
+                                                      dcmethod=dcmethod,
+                                                      biascorrection=biascorrection,
+                                                      n_cpus=args.n_cpus)),
+                                ("fMRISurface", partial(run_generic_fMRI_surface_processsing,
+                                                       path=args.output_dir,
+                                                       subject="sub-%s"%subject_label,
+                                                       fmriname=fmriname,
+                                                       fmrires=fmrires,
+                                                       n_cpus=args.n_cpus,
+                                                       grayordinatesres=grayordinatesres,
+                                                       lowresmesh=lowresmesh))
+                                ])
+            for stage, stage_func in func_stages_dict.iteritems():
+                if stage in args.stages:
+                    stage_func()
+        # Process(target= func_stages, args=(func_stages_dict, )).start()
+
+
 
 
