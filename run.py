@@ -13,7 +13,8 @@ from functools import partial
 from collections import OrderedDict
 import time
 from multiprocessing import Process, Pool
-import sys
+import logging
+import datetime
 
 ms = lambda: int(round(time.time() * 1000))
 
@@ -22,8 +23,8 @@ def run(command, env={}, cwd=None, stage=''):
     merged_env.update(env)
     merged_env.pop("DEBUG", None)
     suffix = ms()
-    logfn = stage + '_' + str(suffix)
-    logpath = str(cwd) + '/' + logfn
+    logfn = stage + '_' + str(suffix) + '.log'
+    logpath = os.path.join(str(cwd),logfn)
     logfile = open(logpath, 'w')
     process = Popen(command, stdout=PIPE, stderr=subprocess.STDOUT,
                     shell=True, env=merged_env, cwd=cwd)
@@ -79,10 +80,13 @@ def run_pre_freesurfer(**args):
     '--topupconfig="{HCPPIPEDIR_Config}/b02b0.cnf" ' + \
     '--printcom=""'
     cmd = cmd.format(**args)
+    logging.info(" {0} : Running PreFreeSurfer".format(datetime.datetime.utcnow().strftime("%a %b %d %H:%M:%S %Z %Y")))
+    logging.info(cmd)
     t = time.time()
     run(cmd, cwd=args["path"], env={"OMP_NUM_THREADS": str(args["n_cpus"])}, stage="PreFreeSurfer")
     elapsed = time.time() - t
     elapsed = elapsed / 60
+    logging.info("Finished running PreFreeSurfer. Time duration: {0} minutes".format(str(elapsed)))
     os.sys.stdout.write("\nElapsed time for PreFreeSurfer is " + str(elapsed) + " minutes. \n")
 
 def run_freesurfer(**args):
@@ -106,11 +110,14 @@ def run_freesurfer(**args):
     if not os.path.exists(os.path.join(args["subjectDIR"], "rh.EC_average")):
         shutil.copytree(os.path.join(os.environ["SUBJECTS_DIR"], "rh.EC_average"),
                         os.path.join(args["subjectDIR"], "rh.EC_average"))
+    logging.info(" {0} : Running FreeSurfer".format(datetime.datetime.utcnow().strftime("%a %b %d %H:%M:%S %Z %Y")))
+    logging.info(cmd)
     t = time.time()
     run(cmd, cwd=args["path"], env={"NSLOTS": str(args["n_cpus"]),
                                     "OMP_NUM_THREADS": str(args["n_cpus"])}, stage="FreeSurfer")
     elapsed = time.time() - t
     elapsed = elapsed / 60
+    logging.info("Finished running FreeSurfer. Time duration: {0} minutes".format(str(elapsed)))
     os.sys.stdout.write("\nElapsed time for FreeSurfer is " + str(elapsed) + " minutes. \n")
 
 def run_post_freesurfer(**args):
@@ -129,10 +136,13 @@ def run_post_freesurfer(**args):
       '--regname="FS" ' + \
       '--printcom=""'
     cmd = cmd.format(**args)
+    logging.info(" {0} : Running PostFreeSurfer".format(datetime.datetime.utcnow().strftime("%a %b %d %H:%M:%S %Z %Y")))
+    logging.info(cmd)
     t = time.time()
     run(cmd, cwd=args["path"], env={"OMP_NUM_THREADS": str(args["n_cpus"])}, stage="PostFreeSurfer")
     elapsed = time.time() - t
     elapsed = elapsed / 60
+    logging.info("Finished running PostFreeSurfer. Time duration: {0} minutes".format(str(elapsed)))
     os.sys.stdout.write("\nElapsed time for PostFreeSurfer is " + str(elapsed) + " minutes. \n")
 
 def run_generic_fMRI_volume_processsing(**args):
@@ -159,14 +169,17 @@ def run_generic_fMRI_volume_processsing(**args):
       '--biascorrection={biascorrection} ' + \
       '--mctype="MCFLIRT"'
     cmd = cmd.format(**args)
+    logging.info(" {0} : Running fMRIVolume".format(datetime.datetime.utcnow().strftime("%a %b %d %H:%M:%S %Z %Y")))
+    logging.info(cmd)
     t = time.time()
-    run(cmd, cwd=args["path"], env={"OMP_NUM_THREADS": str(args["n_cpus"])}, stage="fMRISurface")
+    run(cmd, cwd=args["path"], env={"OMP_NUM_THREADS": str(args["n_cpus"])}, stage="fMRIVolume")
     elapsed = time.time() - t
     elapsed = elapsed / 60
+    logging.info("Finished running fMRIVolume. Time duration: {0} minutes".format(str(elapsed)))
     os.sys.stdout.write("\nElapsed time for fMRIVolume is " + str(elapsed) + " minutes. \n")
 
 def run_generic_fMRI_surface_processsing(**args):
-    print(args)
+    # print(args)
     args.update(os.environ)
     cmd = '{HCPPIPEDIR}/fMRISurface/GenericfMRISurfaceProcessingPipeline.sh ' + \
       '--path={path} ' + \
@@ -178,10 +191,13 @@ def run_generic_fMRI_surface_processsing(**args):
       '--grayordinatesres="{grayordinatesres:s}" ' + \
       '--regname="FS"'
     cmd = cmd.format(**args)
+    logging.info(" {0} : Running fMRISurface".format(datetime.datetime.utcnow().strftime("%a %b %d %H:%M:%S %Z %Y")))
+    logging.info(cmd)
     t = time.time()
-    run(cmd, cwd=args["path"], env={"OMP_NUM_THREADS": str(args["n_cpus"])}, stage="fMRIVolume")
+    run(cmd, cwd=args["path"], env={"OMP_NUM_THREADS": str(args["n_cpus"])}, stage="fMRISurface")
     elapsed = time.time() - t
     elapsed = elapsed / 60
+    logging.info("Finished running fMRISurface. Time duration: {0} minutes".format(str(elapsed)))
     os.sys.stdout.write("\nElapsed time for fMRISurface is " + str(elapsed) + " minutes. \n")
 
 def run_diffusion_processsing(**args):
@@ -198,15 +214,17 @@ def run_diffusion_processsing(**args):
       '--dwiname="{dwiname}" ' + \
       '--printcom=""'
     cmd = cmd.format(**args)
-    print('\n',cmd, '\n')
     t = time.time()
+    logging.info(" {0} : Running DiffusionPreprocessing".format(datetime.datetime.utcnow().strftime("%a %b %d %H:%M:%S %Z %Y")))
+    logging.info(cmd)
     run(cmd, cwd=args["path"], env={"OMP_NUM_THREADS": str(args["n_cpus"])}, stage='DiffusionPreprocessing')
     elapsed = time.time() - t
     elapsed = elapsed / 60
+    logging.info("Finished running DiffusionPreprocessing. Time duration: {0} minutes".format(str(elapsed)))
     os.sys.stdout.write("\nElapsed time for DiffusionPreprocessing is " + str(elapsed) + " minutes. \n")
 
 def generate_level1_fsf(**args):
-    print(args)
+    # print(args)
     args.update(os.environ)
     cmd = '{HCPPIPEDIR}/Examples/Scripts/generate_level_1_fsf_dev.sh ' + \
         '--studyfolder={studyfolder} ' + \
@@ -216,11 +234,17 @@ def generate_level1_fsf(**args):
         '--outdir={outdir} ' + \
         '--dir={dir}'
     cmd = cmd.format(**args)
-    print('\n', cmd, '\n')
-    # run(cmd, cwd=args["path"], env={"OMP_NUM_THREADS": str(args["n_cpus"])})
+    t = time.time()
+    logging.info(" {0} : Generating level 1 FSF file".format(datetime.datetime.utcnow().strftime("%a %b %d %H:%M:%S %Z %Y")))
+    logging.info(cmd)
+    # print('\n', cmd, '\n')
+    run(cmd, cwd=args["path"], env={"OMP_NUM_THREADS": str(args["n_cpus"])})
+    elapsed = time.time() - t
+    elapsed = elapsed / 60
+    logging.info("Finished generating level 1 FSF file. Time duration: {0} minutes".format(str(elapsed)))
 
 def generate_level2_fsf(**args):
-    print(args)
+    # print(args)
     args.update(os.environ)
     cmd = '{HCPPIPEDIR}/Examples/Scripts/generate_level_2_fsf_dev.sh ' + \
         '--studyfolder={studyfolder} ' + \
@@ -229,8 +253,14 @@ def generate_level2_fsf(**args):
         '--templatedir={HCPPIPEDIR}/{templatedir} ' + \
         '--outdir={outdir} '
     cmd = cmd.format(**args)
-    print('\n', cmd, '\n')
-    # run(cmd, cwd=args["path"], env={"OMP_NUM_THREADS": str(args["n_cpus"])})
+    t = time.time()
+    logging.info(" {0} : Generating level 2 FSF file".format(datetime.datetime.utcnow().strftime("%a %b %d %H:%M:%S %Z %Y")))
+    logging.info(cmd)
+    # print('\n', cmd, '\n')
+    run(cmd, cwd=args["path"], env={"OMP_NUM_THREADS": str(args["n_cpus"])})
+    elapsed = time.time() - t
+    elapsed = elapsed / 60
+    logging.info("Finished generating level 2 FSF file. Time duration: {0} minutes".format(str(elapsed)))
 
 def run_task_fmri_analysis(**args):
     print(args)
@@ -253,8 +283,14 @@ def run_task_fmri_analysis(**args):
         '--parcellationfile={parcellationfile} ' + \
         '--printcom=""'
     cmd = cmd.format(**args)
-    print('\n', cmd, '\n')
-    # run(cmd, cwd=args["path"], env={"OMP_NUM_THREADS": str(args["n_cpus"])})
+    t = time.time()
+    logging.info(" {0} : Running TaskfMRIAnalysis".format(datetime.datetime.utcnow().strftime("%a %b %d %H:%M:%S %Z %Y")))
+    logging.info(cmd)
+    # print('\n', cmd, '\n')
+    run(cmd, cwd=args["path"], env={"OMP_NUM_THREADS": str(args["n_cpus"])})
+    elapsed = time.time() - t
+    elapsed = elapsed / 60
+    logging.info("Finished running TaskfMRIAnalysis. Time duration: {0} minutes".format(str(elapsed)))
 
 def func_stages(stages_dict):
     for stage, stage_func in stages_dict.iteritems():
@@ -296,9 +332,17 @@ parser.add_argument('-v', '--version', action='version',
 
 args = parser.parse_args()
 
+suffix = ms()
+logging.basicConfig(filename=os.path.join(args.output_dir, 'HCPPipelines_{0}.log'.format(str(suffix))),
+                    level=logging.DEBUG, format='%(levelname)s:%(message)s', filemode='w')
+logging.info(" {0} : Running bids-validator".format(datetime.datetime.utcnow().strftime("%a %b %d %H:%M:%S %Z %Y")))
 #
 #
+t = time.time()
 run("bids-validator " + args.bids_dir, cwd=args.output_dir, stage="bids-validator")
+elapsed = time.time() - t
+elapsed = elapsed / 60
+logging.info("Finished running bids-validator. Time duration: {0} minutes".format(str(elapsed)))
 
 layout = BIDSLayout(args.bids_dir)
 subjects_to_analyze = []
@@ -509,7 +553,10 @@ if args.analysis_level == "participant":
                 for stage, stage_func in dwi_stage_dict.iteritems():
                     if stage in args.stages:
                         # stage_func()
-                        Process(target=stage_func).start()
+                        try:
+                            Process(target=stage_func).start()
+                        except:
+                            logging.error("{0} stage ended with error. Please check.".format(stage))
 
         bolds = [f.filename for f in layout.get(subject=subject_label,
                                                 type='bold',
@@ -523,7 +570,7 @@ if args.analysis_level == "participant":
                 fmriscout = "NONE"
 
             fieldmap_set = layout.get_fieldmap(fmritcs)
-            print(fieldmap_set)
+            # print(fieldmap_set)
             if fieldmap_set and fieldmap_set["type"] == "epi":
                 SEPhaseNeg = None
                 SEPhasePos = None
@@ -580,7 +627,10 @@ if args.analysis_level == "participant":
                                 ])
             for stage, stage_func in func_stages_dict.iteritems():
                 if stage in args.stages:
-                    stage_func()
+                    try:
+                        stage_func()
+                    except:
+                        logging.error("{0} stage ended with error. Please check. Continuing...".format(stage))
         # Process(target= func_stages, args=(func_stages_dict, )).start()
 
         # task fmris
