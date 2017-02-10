@@ -5,7 +5,7 @@ import os
 import shutil
 import nibabel
 from glob import glob
-from subprocess import Popen, PIPE
+from subprocess import Popen, PIPE, check_output
 from shutil import rmtree
 import subprocess
 from bids.grabbids import BIDSLayout
@@ -13,14 +13,24 @@ from functools import partial
 from collections import OrderedDict
 import time
 from multiprocessing import Process, Pool
-import multiprocessing as mp
+import sys
 
-def run(command, env={}, cwd=None):
+ms = lambda: int(round(time.time() * 1000))
+
+def run(command, env={}, cwd=None, stage=''):
     merged_env = os.environ
     merged_env.update(env)
     merged_env.pop("DEBUG", None)
+    suffix = ms()
+    logfn = stage + '_' + str(suffix)
+    logpath = str(cwd) + '/' + logfn
+    logfile = open(logpath, 'w')
     process = Popen(command, stdout=PIPE, stderr=subprocess.STDOUT,
                     shell=True, env=merged_env, cwd=cwd)
+
+    for line in process.stdout:
+        logfile.write(line)
+
     while True:
         line = process.stdout.readline()
         line = str(line)[:-1]
@@ -70,7 +80,7 @@ def run_pre_freesurfer(**args):
     '--printcom=""'
     cmd = cmd.format(**args)
     t = time.time()
-    run(cmd, cwd=args["path"], env={"OMP_NUM_THREADS": str(args["n_cpus"])})
+    run(cmd, cwd=args["path"], env={"OMP_NUM_THREADS": str(args["n_cpus"])}, stage="PreFreeSurfer")
     elapsed = time.time() - t
     elapsed = elapsed / 60
     os.sys.stdout.write("\nElapsed time for PreFreeSurfer is " + str(elapsed) + " minutes. \n")
@@ -98,7 +108,7 @@ def run_freesurfer(**args):
                         os.path.join(args["subjectDIR"], "rh.EC_average"))
     t = time.time()
     run(cmd, cwd=args["path"], env={"NSLOTS": str(args["n_cpus"]),
-                                    "OMP_NUM_THREADS": str(args["n_cpus"])})
+                                    "OMP_NUM_THREADS": str(args["n_cpus"])}, stage="FreeSurfer")
     elapsed = time.time() - t
     elapsed = elapsed / 60
     os.sys.stdout.write("\nElapsed time for FreeSurfer is " + str(elapsed) + " minutes. \n")
@@ -120,7 +130,7 @@ def run_post_freesurfer(**args):
       '--printcom=""'
     cmd = cmd.format(**args)
     t = time.time()
-    run(cmd, cwd=args["path"], env={"OMP_NUM_THREADS": str(args["n_cpus"])})
+    run(cmd, cwd=args["path"], env={"OMP_NUM_THREADS": str(args["n_cpus"])}, stage="PostFreeSurfer")
     elapsed = time.time() - t
     elapsed = elapsed / 60
     os.sys.stdout.write("\nElapsed time for PostFreeSurfer is " + str(elapsed) + " minutes. \n")
@@ -150,7 +160,7 @@ def run_generic_fMRI_volume_processsing(**args):
       '--mctype="MCFLIRT"'
     cmd = cmd.format(**args)
     t = time.time()
-    run(cmd, cwd=args["path"], env={"OMP_NUM_THREADS": str(args["n_cpus"])})
+    run(cmd, cwd=args["path"], env={"OMP_NUM_THREADS": str(args["n_cpus"])}, stage="fMRISurface")
     elapsed = time.time() - t
     elapsed = elapsed / 60
     os.sys.stdout.write("\nElapsed time for fMRIVolume is " + str(elapsed) + " minutes. \n")
@@ -169,7 +179,7 @@ def run_generic_fMRI_surface_processsing(**args):
       '--regname="FS"'
     cmd = cmd.format(**args)
     t = time.time()
-    run(cmd, cwd=args["path"], env={"OMP_NUM_THREADS": str(args["n_cpus"])})
+    run(cmd, cwd=args["path"], env={"OMP_NUM_THREADS": str(args["n_cpus"])}, stage="fMRIVolume")
     elapsed = time.time() - t
     elapsed = elapsed / 60
     os.sys.stdout.write("\nElapsed time for fMRISurface is " + str(elapsed) + " minutes. \n")
@@ -190,7 +200,7 @@ def run_diffusion_processsing(**args):
     cmd = cmd.format(**args)
     print('\n',cmd, '\n')
     t = time.time()
-    run(cmd, cwd=args["path"], env={"OMP_NUM_THREADS": str(args["n_cpus"])})
+    run(cmd, cwd=args["path"], env={"OMP_NUM_THREADS": str(args["n_cpus"])}, stage='DiffusionPreprocessing')
     elapsed = time.time() - t
     elapsed = elapsed / 60
     os.sys.stdout.write("\nElapsed time for DiffusionPreprocessing is " + str(elapsed) + " minutes. \n")
@@ -288,7 +298,7 @@ args = parser.parse_args()
 
 #
 #
-run("bids-validator " + args.bids_dir)
+run("bids-validator " + args.bids_dir, cwd=args.output_dir, stage="bids-validator")
 
 layout = BIDSLayout(args.bids_dir)
 subjects_to_analyze = []
