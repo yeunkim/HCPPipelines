@@ -18,12 +18,13 @@ import datetime
 
 ms = lambda: int(round(time.time() * 1000))
 
-def run(command, env={}, cwd=None, stage=''):
+def run(command, env={}, cwd=None, stage='', filename=''):
     merged_env = os.environ
     merged_env.update(env)
     merged_env.pop("DEBUG", None)
-    suffix = ms()
-    logfn = stage + '_' + str(suffix) + '.log'
+    # suffix = ms()
+    # logfn = stage + '_' + str(suffix) + '.log'
+    logfn = stage + filename + '.log'
     logpath = os.path.join(str(cwd),logfn)
     logfile = open(logpath, 'w')
     process = Popen(command, stdout=PIPE, stderr=subprocess.STDOUT,
@@ -172,7 +173,7 @@ def run_generic_fMRI_volume_processsing(**args):
     logging.info(" {0} : Running fMRIVolume".format(datetime.datetime.utcnow().strftime("%a %b %d %H:%M:%S %Z %Y")))
     logging.info(cmd)
     t = time.time()
-    run(cmd, cwd=args["path"], env={"OMP_NUM_THREADS": str(args["n_cpus"])}, stage="fMRIVolume")
+    run(cmd, cwd=args["path"], env={"OMP_NUM_THREADS": str(args["n_cpus"])}, stage="fMRIVolume", filename='_{0}'.format(args["fmriname"]))
     elapsed = time.time() - t
     elapsed = elapsed / 60
     logging.info("Finished running fMRIVolume. Time duration: {0} minutes".format(str(elapsed)))
@@ -194,7 +195,7 @@ def run_generic_fMRI_surface_processsing(**args):
     logging.info(" {0} : Running fMRISurface".format(datetime.datetime.utcnow().strftime("%a %b %d %H:%M:%S %Z %Y")))
     logging.info(cmd)
     t = time.time()
-    run(cmd, cwd=args["path"], env={"OMP_NUM_THREADS": str(args["n_cpus"])}, stage="fMRISurface")
+    run(cmd, cwd=args["path"], env={"OMP_NUM_THREADS": str(args["n_cpus"])}, stage="fMRISurface", filename='_{0}'.format(args["fmriname"]))
     elapsed = time.time() - t
     elapsed = elapsed / 60
     logging.info("Finished running fMRISurface. Time duration: {0} minutes".format(str(elapsed)))
@@ -217,7 +218,7 @@ def run_diffusion_processsing(**args):
     t = time.time()
     logging.info(" {0} : Running DiffusionPreprocessing".format(datetime.datetime.utcnow().strftime("%a %b %d %H:%M:%S %Z %Y")))
     logging.info(cmd)
-    run(cmd, cwd=args["path"], env={"OMP_NUM_THREADS": str(args["n_cpus"])}, stage='DiffusionPreprocessing')
+    run(cmd, cwd=args["path"], env={"OMP_NUM_THREADS": str(args["n_cpus"])}, stage='DiffusionPreprocessing', filename='_{0}'.format(args["dwiname"]))
     elapsed = time.time() - t
     elapsed = elapsed / 60
     logging.info("Finished running DiffusionPreprocessing. Time duration: {0} minutes".format(str(elapsed)))
@@ -287,7 +288,7 @@ def run_task_fmri_analysis(**args):
     logging.info(" {0} : Running TaskfMRIAnalysis".format(datetime.datetime.utcnow().strftime("%a %b %d %H:%M:%S %Z %Y")))
     logging.info(cmd)
     # print('\n', cmd, '\n')
-    run(cmd, cwd=args["path"], env={"OMP_NUM_THREADS": str(args["n_cpus"])})
+    run(cmd, cwd=args["path"], env={"OMP_NUM_THREADS": str(args["n_cpus"])}, stage='TaskfMRIAnalysis', filename='_{0}'.format(args["lvl1tasks"]))
     elapsed = time.time() - t
     elapsed = elapsed / 60
     logging.info("Finished running TaskfMRIAnalysis. Time duration: {0} minutes".format(str(elapsed)))
@@ -333,7 +334,7 @@ parser.add_argument('-v', '--version', action='version',
 args = parser.parse_args()
 
 suffix = ms()
-logging.basicConfig(filename=os.path.join(args.output_dir, 'HCPPipelines_{0}.log'.format(str(suffix))),
+logging.basicConfig(filename=os.path.join(args.output_dir, 'HCPPipelines.log'),
                     level=logging.DEBUG, format='%(levelname)s:%(message)s', filemode='w')
 logging.info(" {0} : Running bids-validator".format(datetime.datetime.utcnow().strftime("%a %b %d %H:%M:%S %Z %Y")))
 #
