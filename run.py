@@ -1,4 +1,8 @@
 #!/usr/bin/python
+"""
+Calls HCP scripts to run the HCP Pipelines.
+"""
+
 from __future__ import print_function
 import argparse
 import os
@@ -84,7 +88,7 @@ def run_pre_freesurfer(**args):
     logging.info(" {0} : Running PreFreeSurfer".format(datetime.datetime.utcnow().strftime("%a %b %d %H:%M:%S %Z %Y")))
     logging.info(cmd)
     t = time.time()
-    run(cmd, cwd=args["path"], env={"OMP_NUM_THREADS": str(args["n_cpus"])}, stage="PreFreeSurfer", subject=args["subject"])
+    # run(cmd, cwd=args["path"], env={"OMP_NUM_THREADS": str(args["n_cpus"])}, stage="PreFreeSurfer", subject=args["subject"])
     elapsed = time.time() - t
     elapsed = elapsed / 60
     logging.info("Finished running PreFreeSurfer. Time duration: {0} minutes".format(str(elapsed)))
@@ -114,8 +118,8 @@ def run_freesurfer(**args):
     logging.info(" {0} : Running FreeSurfer".format(datetime.datetime.utcnow().strftime("%a %b %d %H:%M:%S %Z %Y")))
     logging.info(cmd)
     t = time.time()
-    run(cmd, cwd=args["path"], env={"NSLOTS": str(args["n_cpus"]),
-                                    "OMP_NUM_THREADS": str(args["n_cpus"])}, stage="FreeSurfer",subject=args["subject"])
+    # run(cmd, cwd=args["path"], env={"NSLOTS": str(args["n_cpus"]),
+    #                                 "OMP_NUM_THREADS": str(args["n_cpus"])}, stage="FreeSurfer",subject=args["subject"])
     elapsed = time.time() - t
     elapsed = elapsed / 60
     logging.info("Finished running FreeSurfer. Time duration: {0} minutes".format(str(elapsed)))
@@ -140,7 +144,7 @@ def run_post_freesurfer(**args):
     logging.info(" {0} : Running PostFreeSurfer".format(datetime.datetime.utcnow().strftime("%a %b %d %H:%M:%S %Z %Y")))
     logging.info(cmd)
     t = time.time()
-    run(cmd, cwd=args["path"], env={"OMP_NUM_THREADS": str(args["n_cpus"])}, stage="PostFreeSurfer",subject=args["subject"])
+    # run(cmd, cwd=args["path"], env={"OMP_NUM_THREADS": str(args["n_cpus"])}, stage="PostFreeSurfer",subject=args["subject"])
     elapsed = time.time() - t
     elapsed = elapsed / 60
     logging.info("Finished running PostFreeSurfer. Time duration: {0} minutes".format(str(elapsed)))
@@ -173,7 +177,7 @@ def run_generic_fMRI_volume_processsing(**args):
     logging.info(" {0} : Running fMRIVolume".format(datetime.datetime.utcnow().strftime("%a %b %d %H:%M:%S %Z %Y")))
     logging.info(cmd)
     t = time.time()
-    run(cmd, cwd=args["path"], env={"OMP_NUM_THREADS": str(args["n_cpus"])}, stage="fMRIVolume", filename='_{0}'.format(args["fmriname"]),subject=args["subject"])
+    # run(cmd, cwd=args["path"], env={"OMP_NUM_THREADS": str(args["n_cpus"])}, stage="fMRIVolume", filename='_{0}'.format(args["fmriname"]),subject=args["subject"])
     elapsed = time.time() - t
     elapsed = elapsed / 60
     logging.info("Finished running fMRIVolume. Time duration: {0} minutes".format(str(elapsed)))
@@ -195,7 +199,7 @@ def run_generic_fMRI_surface_processsing(**args):
     logging.info(" {0} : Running fMRISurface".format(datetime.datetime.utcnow().strftime("%a %b %d %H:%M:%S %Z %Y")))
     logging.info(cmd)
     t = time.time()
-    run(cmd, cwd=args["path"], env={"OMP_NUM_THREADS": str(args["n_cpus"])}, stage="fMRISurface", filename='_{0}'.format(args["fmriname"]),subject=args["subject"])
+    # run(cmd, cwd=args["path"], env={"OMP_NUM_THREADS": str(args["n_cpus"])}, stage="fMRISurface", filename='_{0}'.format(args["fmriname"]),subject=args["subject"])
     elapsed = time.time() - t
     elapsed = elapsed / 60
     logging.info("Finished running fMRISurface. Time duration: {0} minutes".format(str(elapsed)))
@@ -218,7 +222,7 @@ def run_diffusion_processsing(**args):
     t = time.time()
     logging.info(" {0} : Running DiffusionPreprocessing".format(datetime.datetime.utcnow().strftime("%a %b %d %H:%M:%S %Z %Y")))
     logging.info(cmd)
-    run(cmd, cwd=args["path"], env={"OMP_NUM_THREADS": str(args["n_cpus"])}, stage='DiffusionPreprocessing', filename='_{0}'.format(args["dwiname"]),subject=args["subject"])
+    # run(cmd, cwd=args["path"], env={"OMP_NUM_THREADS": str(args["n_cpus"])}, stage='DiffusionPreprocessing', filename='_{0}'.format(args["dwiname"]),subject=args["subject"])
     elapsed = time.time() - t
     elapsed = elapsed / 60
     logging.info("Finished running DiffusionPreprocessing. Time duration: {0} minutes".format(str(elapsed)))
@@ -333,6 +337,7 @@ parser.add_argument('-v', '--version', action='version',
 
 args = parser.parse_args()
 
+starttime = time.time()
 # suffix = ms()
 ## make logs directory
 if not os.path.exists(os.path.join(args.output_dir, "logs")):
@@ -342,6 +347,9 @@ subject_dirs = glob(os.path.join(args.bids_dir, "sub-*"))
 subjects_to_analyze = [subject_dir.split("-")[-1] for subject_dir in subject_dirs]
 logging.basicConfig(filename=os.path.join(args.output_dir, 'logs','sub-{0}_HCPPipelines.log'.format(subjects_to_analyze[0])),
                     level=logging.DEBUG, format='%(levelname)s:%(message)s', filemode='w')
+logging.info(" {0} : Starting the HCP processing pipeline...".format(datetime.datetime.utcnow().strftime("%a %b %d %H:%M:%S %Z %Y")))
+subprocess.call("python genStatusFile.py {0} /public_html".format(subjects_to_analyze[0]), shell=True)
+
 logging.info(" {0} : Running bids-validator".format(datetime.datetime.utcnow().strftime("%a %b %d %H:%M:%S %Z %Y")))
 #
 #
@@ -365,6 +373,37 @@ else:
 if args.analysis_level == "participant":
     # find all T1s and skullstrip them
     for subject_label in subjects_to_analyze:
+        logging.info("Running subject: {0}".format(subjects_to_analyze[0]))
+        boldsnumruns = 0
+        dwinumruns = 0
+        dirnums = []
+
+        numruns = set(layout.get(target='run', return_type='id',
+                                 subject=subject_label, type='dwi',
+                                 extensions=["nii.gz", "nii"]))
+
+        for session in numruns:
+            acqs = set(layout.get(target='acquisition', return_type='id',
+                                  subject=subject_label, type='dwi',
+                                  extensions=["nii.gz", "nii"]))
+            for acq in acqs:
+                y = [int(s) for s in acq[0:len(acq)] if s.isdigit()]
+                y = [str(s) for s in y]
+                y = ''.join(y)
+                dirnums.append(y)
+
+        dwinumruns = len(numruns) * len(set(dirnums))
+        logging.info("Total number of DiffusionPreprocessing processes: {0}".format(str(dwinumruns)))
+
+        bolds = [f.filename for f in layout.get(subject=subject_label,
+                                                type='bold',
+                                                extensions=["nii.gz", "nii"])]
+
+        boldsnumruns = len(bolds)
+        logging.info("Total number of fMRI processes: {0}".format(str(boldsnumruns)))
+
+
+
         t1ws = [f.filename for f in layout.get(subject=subject_label,
                                                type='T1w',
                                                extensions=["nii.gz", "nii"])]
@@ -496,6 +535,8 @@ if args.analysis_level == "participant":
         dwiname = "Diffusion"
         dirnums = []
 
+
+        #TODO: remove redundant code after testing
         numruns = set(layout.get(target='run', return_type='id',
                                  subject=subject_label, type='dwi',
                                  extensions=["nii.gz", "nii"]))
@@ -509,6 +550,9 @@ if args.analysis_level == "participant":
                 y = [str(s) for s in y]
                 y = ''.join(y)
                 dirnums.append(y)
+
+            dwinumruns = len(numruns) * len(dirnums)
+
             for dirnum in set(dirnums):
                 dwiname = "Diffusion" + "_dir-" + dirnum + "_" + session + "_corr"
 
@@ -565,9 +609,19 @@ if args.analysis_level == "participant":
                         except:
                             logging.error("{0} stage ended with error. Please check.".format(stage))
 
+        # logging.info("Total number of DiffusionPreprocessing processes: {0}".format(str(dwinumruns)))
+
+        # TODO: remove redundant code after testing
         bolds = [f.filename for f in layout.get(subject=subject_label,
                                                 type='bold',
                                                 extensions=["nii.gz", "nii"])]
+
+        boldsnumruns = len(bolds)
+
+        # logging.info("Total number of fMRI processes: {0}".format(str(boldsnumruns)))
+        # totalnumofprocs = 3 + dwinumruns + boldsnumruns
+
+
         for fmritcs in bolds:
             fmriname = "_".join(fmritcs.split("sub-")[-1].split("_")[1:-1]).split(".")[0]
             assert fmriname
@@ -744,6 +798,9 @@ if args.analysis_level == "participant":
         #                 if stage in args.stages:
         #                     stage_func()
 
+    elapsed = time.time() - starttime
+    elapsed = elapsed / 60
+    logging.info("HCP Processing completed. Time duration: {0} minutes".format(str(elapsed)))
 
 
 

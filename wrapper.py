@@ -1,4 +1,9 @@
 #!/usr/bin/python
+"""
+Wrapper script to convert and organize DICOM raw files into BIDS-compatible files.
+Also launches run.py.
+
+"""
 
 import os
 import argparse

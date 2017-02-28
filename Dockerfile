@@ -130,6 +130,8 @@ COPY run.py /run.py
 RUN chmod +x /run.py
 COPY wrapper.py /wrapper.py
 RUN chmod +x /wrapper.py
+COPY genStatusFile.py /genStatusFile.py
+RUN chmod +x /genStatusFile.py
 
 COPY version /version
 

@@ -2,7 +2,11 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="852e787a-b50f-49d6-bd62-39233eae4789" name="Default" comment="">
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/genStatusFile.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Dockerfile" afterPath="$PROJECT_DIR$/Dockerfile" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/run.py" afterPath="$PROJECT_DIR$/run.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/wrapper.py" afterPath="$PROJECT_DIR$/wrapper.py" />
     </list>
     <ignored path="hcppipelines_yk.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -22,13 +26,25 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="run.py" pinned="false" current-in-tab="true">
+      <file leaf-file-name="run.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/run.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="108">
-              <caret line="327" column="74" selection-start-line="327" selection-start-column="74" selection-end-line="327" selection-end-column="74" />
+            <state relative-caret-position="1080">
+              <caret line="327" column="43" selection-start-line="327" selection-start-column="43" selection-end-line="327" selection-end-column="43" />
               <folding>
-                <element signature="e#18#55#0" expanded="true" />
+                <element signature="e#71#108#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="genStatusFile.py" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/genStatusFile.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="151">
+              <caret line="50" column="26" selection-start-line="50" selection-start-column="26" selection-end-line="50" selection-end-column="26" />
+              <folding>
+                <element signature="e#133#188#0" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -37,24 +53,31 @@
       <file leaf-file-name="Dockerfile" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/Dockerfile">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="593">
-              <caret line="35" column="17" selection-start-line="35" selection-start-column="17" selection-end-line="35" selection-end-column="17" />
+            <state relative-caret-position="614">
+              <caret line="133" column="30" selection-start-line="133" selection-start-column="30" selection-end-line="133" selection-end-column="30" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="wrapper.py" pinned="false" current-in-tab="false">
+      <file leaf-file-name="wrapper.py" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/wrapper.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="108">
-              <caret line="6" column="17" selection-start-line="6" selection-start-column="17" selection-end-line="6" selection-end-column="17" />
+            <state relative-caret-position="92">
+              <caret line="11" column="17" selection-start-line="11" selection-start-column="17" selection-end-line="11" selection-end-column="17" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
     </leaf>
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Python Script" />
+      </list>
+    </option>
   </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
@@ -63,15 +86,16 @@
     <option name="CHANGED_PATHS">
       <list>
         <option value="$USER_HOME$/Documents/BIDS_conversion/bin/BIDS_organize.py" />
-        <option value="$PROJECT_DIR$/Dockerfile" />
         <option value="$PROJECT_DIR$/wrapper.py" />
+        <option value="$PROJECT_DIR$/Dockerfile" />
         <option value="$PROJECT_DIR$/run.py" />
+        <option value="$PROJECT_DIR$/genStatusFile.py" />
       </list>
     </option>
   </component>
   <component name="ProjectFrameBounds">
-    <option name="x" value="176" />
-    <option name="y" value="84" />
+    <option name="x" value="160" />
+    <option name="y" value="112" />
     <option name="width" value="1618" />
     <option name="height" value="899" />
   </component>
@@ -101,6 +125,7 @@
     </navigator>
     <panes>
       <pane id="Scratches" />
+      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <PATH>
@@ -121,7 +146,6 @@
           </PATH>
         </subPane>
       </pane>
-      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -290,7 +314,7 @@
     <servers />
   </component>
   <component name="ToolWindowManager">
-    <frame x="176" y="84" width="1618" height="899" extended-state="0" />
+    <frame x="160" y="112" width="1618" height="899" extended-state="0" />
     <editor active="true" />
     <layout>
       <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.17428924" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
@@ -330,10 +354,36 @@
   <component name="editorHistoryManager">
     <entry file="file://$PROJECT_DIR$/run.py">
       <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="6462">
+          <caret line="359" column="5" selection-start-line="359" selection-start-column="5" selection-end-line="359" selection-end-column="5" />
+          <folding>
+            <element signature="e#71#108#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Dockerfile">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/wrapper.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="108">
+          <caret line="6" column="17" selection-start-line="6" selection-start-column="17" selection-end-line="6" selection-end-column="17" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/run.py">
+      <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding>
-            <element signature="e#18#55#0" expanded="true" />
+            <element signature="e#71#108#0" expanded="true" />
           </folding>
         </state>
       </provider>
@@ -359,7 +409,7 @@
         <state relative-caret-position="0">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding>
-            <element signature="e#18#55#0" expanded="true" />
+            <element signature="e#71#108#0" expanded="true" />
           </folding>
         </state>
       </provider>
@@ -385,7 +435,7 @@
         <state relative-caret-position="0">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding>
-            <element signature="e#18#55#0" expanded="true" />
+            <element signature="e#71#108#0" expanded="true" />
           </folding>
         </state>
       </provider>
@@ -411,7 +461,7 @@
         <state relative-caret-position="0">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding>
-            <element signature="e#18#55#0" expanded="true" />
+            <element signature="e#71#108#0" expanded="true" />
           </folding>
         </state>
       </provider>
@@ -437,7 +487,7 @@
         <state relative-caret-position="120">
           <caret line="20" column="52" selection-start-line="20" selection-start-column="52" selection-end-line="20" selection-end-column="52" />
           <folding>
-            <element signature="e#18#55#0" expanded="true" />
+            <element signature="e#71#108#0" expanded="true" />
           </folding>
         </state>
       </provider>
@@ -455,7 +505,7 @@
         <state relative-caret-position="120">
           <caret line="20" column="52" selection-start-line="20" selection-start-column="52" selection-end-line="20" selection-end-column="52" />
           <folding>
-            <element signature="e#18#55#0" expanded="true" />
+            <element signature="e#71#108#0" expanded="true" />
           </folding>
         </state>
       </provider>
@@ -473,7 +523,7 @@
         <state relative-caret-position="5745">
           <caret line="383" column="66" selection-start-line="383" selection-start-column="66" selection-end-line="383" selection-end-column="66" />
           <folding>
-            <element signature="e#18#55#0" expanded="true" />
+            <element signature="e#71#108#0" expanded="true" />
           </folding>
         </state>
       </provider>
@@ -491,7 +541,7 @@
         <state relative-caret-position="2310">
           <caret line="165" column="34" selection-start-line="165" selection-start-column="34" selection-end-line="165" selection-end-column="34" />
           <folding>
-            <element signature="e#18#55#0" expanded="true" />
+            <element signature="e#71#108#0" expanded="true" />
           </folding>
         </state>
       </provider>
@@ -509,7 +559,7 @@
         <state relative-caret-position="7965">
           <caret line="542" column="104" selection-start-line="542" selection-start-column="104" selection-end-line="542" selection-end-column="104" />
           <folding>
-            <element signature="e#18#55#0" expanded="true" />
+            <element signature="e#71#108#0" expanded="true" />
           </folding>
         </state>
       </provider>
@@ -527,7 +577,7 @@
         <state relative-caret-position="7965">
           <caret line="542" column="104" selection-start-line="542" selection-start-column="104" selection-end-line="542" selection-end-column="104" />
           <folding>
-            <element signature="e#18#55#0" expanded="true" />
+            <element signature="e#71#108#0" expanded="true" />
           </folding>
         </state>
       </provider>
@@ -549,27 +599,37 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/Dockerfile">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="593">
-          <caret line="35" column="17" selection-start-line="35" selection-start-column="17" selection-end-line="35" selection-end-column="17" />
+        <state relative-caret-position="614">
+          <caret line="133" column="30" selection-start-line="133" selection-start-column="30" selection-end-line="133" selection-end-column="30" />
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/wrapper.py">
+    <entry file="file://$PROJECT_DIR$/genStatusFile.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="108">
-          <caret line="6" column="17" selection-start-line="6" selection-start-column="17" selection-end-line="6" selection-end-column="17" />
-          <folding />
+        <state relative-caret-position="151">
+          <caret line="50" column="26" selection-start-line="50" selection-start-column="26" selection-end-line="50" selection-end-column="26" />
+          <folding>
+            <element signature="e#133#188#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/run.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="108">
-          <caret line="327" column="74" selection-start-line="327" selection-start-column="74" selection-end-line="327" selection-end-column="74" />
+        <state relative-caret-position="1080">
+          <caret line="327" column="43" selection-start-line="327" selection-start-column="43" selection-end-line="327" selection-end-column="43" />
           <folding>
-            <element signature="e#18#55#0" expanded="true" />
+            <element signature="e#71#108#0" expanded="true" />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/wrapper.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="92">
+          <caret line="11" column="17" selection-start-line="11" selection-start-column="17" selection-end-line="11" selection-end-column="17" />
+          <folding />
         </state>
       </provider>
     </entry>
