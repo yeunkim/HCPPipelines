@@ -88,7 +88,7 @@ def run_pre_freesurfer(**args):
     logging.info(" {0} : Running PreFreeSurfer".format(datetime.datetime.utcnow().strftime("%a %b %d %H:%M:%S %Z %Y")))
     logging.info(cmd)
     t = time.time()
-    # run(cmd, cwd=args["path"], env={"OMP_NUM_THREADS": str(args["n_cpus"])}, stage="PreFreeSurfer", subject=args["subject"])
+    run(cmd, cwd=args["path"], env={"OMP_NUM_THREADS": str(args["n_cpus"])}, stage="PreFreeSurfer", subject=args["subject"])
     elapsed = time.time() - t
     elapsed = elapsed / 60
     logging.info("Finished running PreFreeSurfer. Time duration: {0} minutes".format(str(elapsed)))
@@ -118,8 +118,8 @@ def run_freesurfer(**args):
     logging.info(" {0} : Running FreeSurfer".format(datetime.datetime.utcnow().strftime("%a %b %d %H:%M:%S %Z %Y")))
     logging.info(cmd)
     t = time.time()
-    # run(cmd, cwd=args["path"], env={"NSLOTS": str(args["n_cpus"]),
-    #                                 "OMP_NUM_THREADS": str(args["n_cpus"])}, stage="FreeSurfer",subject=args["subject"])
+    run(cmd, cwd=args["path"], env={"NSLOTS": str(args["n_cpus"]),
+                                    "OMP_NUM_THREADS": str(args["n_cpus"])}, stage="FreeSurfer",subject=args["subject"])
     elapsed = time.time() - t
     elapsed = elapsed / 60
     logging.info("Finished running FreeSurfer. Time duration: {0} minutes".format(str(elapsed)))
@@ -144,7 +144,7 @@ def run_post_freesurfer(**args):
     logging.info(" {0} : Running PostFreeSurfer".format(datetime.datetime.utcnow().strftime("%a %b %d %H:%M:%S %Z %Y")))
     logging.info(cmd)
     t = time.time()
-    # run(cmd, cwd=args["path"], env={"OMP_NUM_THREADS": str(args["n_cpus"])}, stage="PostFreeSurfer",subject=args["subject"])
+    run(cmd, cwd=args["path"], env={"OMP_NUM_THREADS": str(args["n_cpus"])}, stage="PostFreeSurfer",subject=args["subject"])
     elapsed = time.time() - t
     elapsed = elapsed / 60
     logging.info("Finished running PostFreeSurfer. Time duration: {0} minutes".format(str(elapsed)))
@@ -177,7 +177,7 @@ def run_generic_fMRI_volume_processsing(**args):
     logging.info(" {0} : Running fMRIVolume".format(datetime.datetime.utcnow().strftime("%a %b %d %H:%M:%S %Z %Y")))
     logging.info(cmd)
     t = time.time()
-    # run(cmd, cwd=args["path"], env={"OMP_NUM_THREADS": str(args["n_cpus"])}, stage="fMRIVolume", filename='_{0}'.format(args["fmriname"]),subject=args["subject"])
+    run(cmd, cwd=args["path"], env={"OMP_NUM_THREADS": str(args["n_cpus"])}, stage="fMRIVolume", filename='_{0}'.format(args["fmriname"]),subject=args["subject"])
     elapsed = time.time() - t
     elapsed = elapsed / 60
     logging.info("Finished running fMRIVolume. Time duration: {0} minutes".format(str(elapsed)))
@@ -199,7 +199,7 @@ def run_generic_fMRI_surface_processsing(**args):
     logging.info(" {0} : Running fMRISurface".format(datetime.datetime.utcnow().strftime("%a %b %d %H:%M:%S %Z %Y")))
     logging.info(cmd)
     t = time.time()
-    # run(cmd, cwd=args["path"], env={"OMP_NUM_THREADS": str(args["n_cpus"])}, stage="fMRISurface", filename='_{0}'.format(args["fmriname"]),subject=args["subject"])
+    run(cmd, cwd=args["path"], env={"OMP_NUM_THREADS": str(args["n_cpus"])}, stage="fMRISurface", filename='_{0}'.format(args["fmriname"]),subject=args["subject"])
     elapsed = time.time() - t
     elapsed = elapsed / 60
     logging.info("Finished running fMRISurface. Time duration: {0} minutes".format(str(elapsed)))
@@ -222,7 +222,7 @@ def run_diffusion_processsing(**args):
     t = time.time()
     logging.info(" {0} : Running DiffusionPreprocessing".format(datetime.datetime.utcnow().strftime("%a %b %d %H:%M:%S %Z %Y")))
     logging.info(cmd)
-    # run(cmd, cwd=args["path"], env={"OMP_NUM_THREADS": str(args["n_cpus"])}, stage='DiffusionPreprocessing', filename='_{0}'.format(args["dwiname"]),subject=args["subject"])
+    run(cmd, cwd=args["path"], env={"OMP_NUM_THREADS": str(args["n_cpus"])}, stage='DiffusionPreprocessing', filename='_{0}'.format(args["dwiname"]),subject=args["subject"])
     elapsed = time.time() - t
     elapsed = elapsed / 60
     logging.info("Finished running DiffusionPreprocessing. Time duration: {0} minutes".format(str(elapsed)))
