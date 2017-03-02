@@ -348,7 +348,7 @@ subjects_to_analyze = [subject_dir.split("-")[-1] for subject_dir in subject_dir
 logging.basicConfig(filename=os.path.join(args.output_dir, 'logs','sub-{0}_HCPPipelines.log'.format(subjects_to_analyze[0])),
                     level=logging.DEBUG, format='%(levelname)s:%(message)s', filemode='w')
 logging.info(" {0} : Starting the HCP processing pipeline...".format(datetime.datetime.utcnow().strftime("%a %b %d %H:%M:%S %Z %Y")))
-subprocess.call("python genStatusFile.py {0} /public_html".format(subjects_to_analyze[0]), shell=True)
+# subprocess.call("python genStatusFile.py {0} /public_html".format(subjects_to_analyze[0]), shell=True)
 
 logging.info(" {0} : Running bids-validator".format(datetime.datetime.utcnow().strftime("%a %b %d %H:%M:%S %Z %Y")))
 #
