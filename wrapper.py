@@ -5,7 +5,7 @@ Also launches run.py.
 
 """
 
-import os
+import os, shutil
 import argparse
 import traceback
 import sys
@@ -38,6 +38,12 @@ if __name__ == '__main__':
         subprocess.call(bidsconv, shell=True)
 
         os.mkdir(args.outputdir+ '/' + args.subjID+'_output')
+
+        # move previously created log files into logs directory
+        logsfpath = os.path.join(args.outputdir, args.subjID+'_output', "logs")
+        os.mkdir(logsfpath)
+        shutil.move(os.path.join(args.outputdir, "bids_conversion_logs"), os.path.join(logsfpath, "bids_conversion_logs"))
+
         runpy = "/run.py " + args.outputdir+'/'+args.subjID+'_bids/'+args.dataset + ' '+ args.outputdir+'/'+args.subjID+'_output '+" participant --n_cpus " + str(args.n_cpus) + ' ' + '--license_key ' + args.license_key + ' --stages ' + ' '.join(args.stages)
         subprocess.call(runpy, shell=True)
 

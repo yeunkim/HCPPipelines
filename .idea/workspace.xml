@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="852e787a-b50f-49d6-bd62-39233eae4789" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/run.py" afterPath="$PROJECT_DIR$/run.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/wrapper.py" afterPath="$PROJECT_DIR$/wrapper.py" />
     </list>
     <ignored path="hcppipelines_yk.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -22,11 +22,11 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="run.py" pinned="false" current-in-tab="true">
+      <file leaf-file-name="run.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/run.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="425">
-              <caret line="644" column="22" selection-start-line="644" selection-start-column="22" selection-end-line="644" selection-end-column="22" />
+            <state relative-caret-position="-3841">
+              <caret line="323" column="66" selection-start-line="323" selection-start-column="66" selection-end-line="323" selection-end-column="66" />
               <folding>
                 <element signature="e#71#108#0" expanded="true" />
               </folding>
@@ -56,13 +56,13 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="wrapper.py" pinned="false" current-in-tab="false">
+      <file leaf-file-name="wrapper.py" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/wrapper.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="272">
-              <caret line="21" column="51" selection-start-line="21" selection-start-column="51" selection-end-line="21" selection-end-column="52" />
+            <state relative-caret-position="132">
+              <caret line="20" column="43" selection-start-line="20" selection-start-column="43" selection-end-line="20" selection-end-column="43" />
               <folding>
-                <element signature="e#133#142#0" expanded="true" />
+                <element signature="e#133#150#0" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -86,14 +86,14 @@
         <option value="$USER_HOME$/Documents/BIDS_conversion/bin/BIDS_organize.py" />
         <option value="$PROJECT_DIR$/Dockerfile" />
         <option value="$PROJECT_DIR$/genStatusFile.py" />
-        <option value="$PROJECT_DIR$/wrapper.py" />
         <option value="$PROJECT_DIR$/run.py" />
+        <option value="$PROJECT_DIR$/wrapper.py" />
       </list>
     </option>
   </component>
   <component name="ProjectFrameBounds">
-    <option name="x" value="139" />
-    <option name="y" value="97" />
+    <option name="x" value="153" />
+    <option name="y" value="117" />
     <option name="width" value="1618" />
     <option name="height" value="899" />
   </component>
@@ -312,7 +312,7 @@
     <servers />
   </component>
   <component name="ToolWindowManager">
-    <frame x="139" y="97" width="1618" height="899" extended-state="0" />
+    <frame x="153" y="117" width="1618" height="899" extended-state="0" />
     <editor active="true" />
     <layout>
       <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.17428924" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
@@ -373,7 +373,7 @@
         <state relative-caret-position="108">
           <caret line="6" column="17" selection-start-line="6" selection-start-column="17" selection-end-line="6" selection-end-column="17" />
           <folding>
-            <element signature="e#133#142#0" expanded="true" />
+            <element signature="e#133#150#0" expanded="true" />
           </folding>
         </state>
       </provider>
@@ -401,7 +401,7 @@
         <state relative-caret-position="576">
           <caret line="37" column="0" selection-start-line="37" selection-start-column="0" selection-end-line="37" selection-end-column="0" />
           <folding>
-            <element signature="e#133#142#0" expanded="true" />
+            <element signature="e#133#150#0" expanded="true" />
           </folding>
         </state>
       </provider>
@@ -429,7 +429,7 @@
         <state relative-caret-position="576">
           <caret line="37" column="0" selection-start-line="37" selection-start-column="0" selection-end-line="37" selection-end-column="0" />
           <folding>
-            <element signature="e#133#142#0" expanded="true" />
+            <element signature="e#133#150#0" expanded="true" />
           </folding>
         </state>
       </provider>
@@ -457,7 +457,7 @@
         <state relative-caret-position="576">
           <caret line="37" column="0" selection-start-line="37" selection-start-column="0" selection-end-line="37" selection-end-column="0" />
           <folding>
-            <element signature="e#133#142#0" expanded="true" />
+            <element signature="e#133#150#0" expanded="true" />
           </folding>
         </state>
       </provider>
@@ -485,7 +485,7 @@
         <state relative-caret-position="576">
           <caret line="37" column="0" selection-start-line="37" selection-start-column="0" selection-end-line="37" selection-end-column="0" />
           <folding>
-            <element signature="e#133#142#0" expanded="true" />
+            <element signature="e#133#150#0" expanded="true" />
           </folding>
         </state>
       </provider>
@@ -613,16 +613,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/wrapper.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="272">
-          <caret line="21" column="51" selection-start-line="21" selection-start-column="51" selection-end-line="21" selection-end-column="52" />
-          <folding>
-            <element signature="e#133#142#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/genStatusFile.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="313">
@@ -635,10 +625,20 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/run.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="425">
-          <caret line="644" column="22" selection-start-line="644" selection-start-column="22" selection-end-line="644" selection-end-column="22" />
+        <state relative-caret-position="-3841">
+          <caret line="323" column="66" selection-start-line="323" selection-start-column="66" selection-end-line="323" selection-end-column="66" />
           <folding>
             <element signature="e#71#108#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/wrapper.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="132">
+          <caret line="20" column="43" selection-start-line="20" selection-start-column="43" selection-end-line="20" selection-end-column="43" />
+          <folding>
+            <element signature="e#133#150#0" expanded="true" />
           </folding>
         </state>
       </provider>
