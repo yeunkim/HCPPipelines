@@ -103,7 +103,7 @@ ENV HCPPIPEDIR_Global=${HCPPIPEDIR}/global/scripts
 ENV HCPPIPEDIR_tfMRIAnalysis=${HCPPIPEDIR}/TaskfMRIAnalysis/scripts
 ENV MSMBin=${HCPPIPEDIR}/MSMBinaries
 
-RUN apt-get update && apt-get install -y --no-install-recommends python-pip python-six python-nibabel python-setuptools && \
+RUN apt-get update && apt-get install -y --no-install-recommends python-pip python-six python-nibabel python-setuptools python-pandas && \
     rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 RUN pip install pybids==0.0.1
 ENV PYTHONPATH=""
@@ -132,6 +132,14 @@ COPY wrapper.py /wrapper.py
 RUN chmod +x /wrapper.py
 COPY genStatusFile.py /genStatusFile.py
 RUN chmod +x /genStatusFile.py
+COPY psychopy2evs.py /psychopy2evs.py
+RUN chmod +x /psychopy2evs.py
+COPY fsf_templates /fsf_templates
+RUN chmod +x /fsf_templates/scripts/generate_level1_fsf.sh
+COPY TaskfMRIAnalysis/TaskfMRIAnalysis.v1.0.sh /opt/HCP-Pipelines/TaskfMRIAnalysis/TaskfMRIAnalysis.v1.0.sh
+COPY TaskfMRIAnalysis/TaskfMRIAnalysis.v2.0.sh /opt/HCP-Pipelines/TaskfMRIAnalysis/TaskfMRIAnalysis.v2.0.sh
+RUN chmod +x /opt/HCP-Pipelines/TaskfMRIAnalysis/TaskfMRIAnalysis.v1.0.sh
+RUN chmod +x /opt/HCP-Pipelines/TaskfMRIAnalysis/TaskfMRIAnalysis.v2.0.sh
 
 COPY version /version
 

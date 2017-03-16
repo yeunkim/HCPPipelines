@@ -30,10 +30,17 @@ if __name__ == '__main__':
                         default=['PreFreeSurfer', 'FreeSurfer', 'PostFreeSurfer',
                                  'fMRIVolume', 'fMRISurface',
                                  'DiffusionPreprocessing', 'TaskfMRIAnalysis'])
+    parser.add_argument('-EV', dest='EV', help='Parent directory which contains folders with Psychopy output.\n'
+                                               'This will generate EV files compatible for FSL task fmri analysis', required=False)
 
     args = parser.parse_args()
 
     try:
+        # generate EV files
+        if args.EV is not None:
+            psychopy = "python /psychopy2evs.py -l " + args.EV + " -o " + args.outputdir + " -s " + args.subjID
+            subprocess.call(psychopy, shell=True)
+
         bidsconv = "python /bidsconversion/bin/run.py " + args.sourcedir + ' ' + args.outputdir + ' /dcm2niix/bin/dcm2niibatch ' + '-subj ' + args.subjID + ' -dataset ' + args.dataset
         subprocess.call(bidsconv, shell=True)
 
