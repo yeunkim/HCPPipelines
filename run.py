@@ -733,7 +733,7 @@ if args.analysis_level == "participant":
             #     # assert len(tasknumcheck) >= 2
 
             for task in set(tasks):
-                if "rest" not in task:
+                if "face" in task or "carit" in task:
                     acqs = set(layout.get(target='acquisition', return_type='id', task=task,
                                           subject=subject_label, type='bold', run=session,
                                           extensions=["nii.gz", "nii"]))

@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="852e787a-b50f-49d6-bd62-39233eae4789" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/wrapper.py" afterPath="$PROJECT_DIR$/wrapper.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/run.py" afterPath="$PROJECT_DIR$/run.py" />
     </list>
     <ignored path="hcppipelines_yk.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -22,11 +22,11 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="run.py" pinned="false" current-in-tab="false">
+      <file leaf-file-name="run.py" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/run.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="420">
-              <caret line="331" column="57" selection-start-line="331" selection-start-column="40" selection-end-line="331" selection-end-column="57" />
+            <state relative-caret-position="82">
+              <caret line="735" column="53" selection-start-line="735" selection-start-column="53" selection-end-line="735" selection-end-column="53" />
               <folding>
                 <element signature="e#71#108#0" expanded="true" />
               </folding>
@@ -54,11 +54,11 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="wrapper.py" pinned="false" current-in-tab="true">
+      <file leaf-file-name="wrapper.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/wrapper.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="361">
-              <caret line="32" column="93" selection-start-line="32" selection-start-column="93" selection-end-line="32" selection-end-column="93" />
+            <state relative-caret-position="541">
+              <caret line="49" column="63" selection-start-line="49" selection-start-column="63" selection-end-line="49" selection-end-column="63" />
               <folding>
                 <element signature="e#133#150#0" expanded="true" />
               </folding>
@@ -115,14 +115,14 @@
         <option value="$PROJECT_DIR$/TaskfMRIAnalysis/TaskfMRIAnalysis.v1.0.sh" />
         <option value="$PROJECT_DIR$/TaskfMRIAnalysis/TaskfMRIAnalysis.v2.0.sh" />
         <option value="$PROJECT_DIR$/fsf_templates/tfMRI_carit_PA_hp200_s4_level1.fsf" />
-        <option value="$PROJECT_DIR$/run.py" />
         <option value="$PROJECT_DIR$/wrapper.py" />
+        <option value="$PROJECT_DIR$/run.py" />
       </list>
     </option>
   </component>
   <component name="ProjectFrameBounds">
-    <option name="x" value="224" />
-    <option name="y" value="106" />
+    <option name="x" value="14" />
+    <option name="y" value="170" />
     <option name="width" value="1593" />
     <option name="height" value="916" />
   </component>
@@ -398,7 +398,7 @@
     <servers />
   </component>
   <component name="ToolWindowManager">
-    <frame x="224" y="106" width="1593" height="916" extended-state="0" />
+    <frame x="14" y="170" width="1593" height="916" extended-state="0" />
     <editor active="true" />
     <layout>
       <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.19083491" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
@@ -783,22 +783,22 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/run.py">
+    <entry file="file://$PROJECT_DIR$/wrapper.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="420">
-          <caret line="331" column="57" selection-start-line="331" selection-start-column="40" selection-end-line="331" selection-end-column="57" />
+        <state relative-caret-position="541">
+          <caret line="49" column="63" selection-start-line="49" selection-start-column="63" selection-end-line="49" selection-end-column="63" />
           <folding>
-            <element signature="e#71#108#0" expanded="true" />
+            <element signature="e#133#150#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/wrapper.py">
+    <entry file="file://$PROJECT_DIR$/run.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="361">
-          <caret line="32" column="93" selection-start-line="32" selection-start-column="93" selection-end-line="32" selection-end-column="93" />
+        <state relative-caret-position="82">
+          <caret line="735" column="53" selection-start-line="735" selection-start-column="53" selection-end-line="735" selection-end-column="53" />
           <folding>
-            <element signature="e#133#150#0" expanded="true" />
+            <element signature="e#71#108#0" expanded="true" />
           </folding>
         </state>
       </provider>
