@@ -26,10 +26,11 @@ if __name__ == '__main__':
     parser.add_argument('--stages', help='Which stages to run. Space separated list.',
                         nargs="+", choices=['PreFreeSurfer', 'FreeSurfer',
                                             'PostFreeSurfer', 'fMRIVolume',
-                                            'fMRISurface', 'DiffusionPreprocessing','TaskfMRIAnalysis'],
+                                            'fMRISurface', 'DiffusionPreprocessing',
+                                            'generateLevel1fsf','TaskfMRIAnalysis'],
                         default=['PreFreeSurfer', 'FreeSurfer', 'PostFreeSurfer',
                                  'fMRIVolume', 'fMRISurface',
-                                 'DiffusionPreprocessing', 'TaskfMRIAnalysis'])
+                                 'DiffusionPreprocessing', 'generateLevel1fsf','TaskfMRIAnalysis'])
     parser.add_argument('-EV', dest='EV', help='Parent directory which contains folders with Psychopy output.\n'
                                                'This will generate EV files compatible for FSL task fmri analysis', required=False)
 
