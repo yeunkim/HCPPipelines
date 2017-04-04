@@ -11,7 +11,8 @@ Edited from "gen_banda_onsets.py" created by Mathias Goncalves @ MGH:
     with their appropriate flags if needed.
     
 Edited by Amber Leaver, 02/27/2017 to remove code for irrelevant tasks and to add new code for CARIT task
-Edited by Yeun Kim 03/15/17.
+Edited by Amber Leaver, 03/21/2017 to remove correct FaceMatching lines
+Edited by Yeun Kim 03/24/17.
 
 """
 
@@ -35,48 +36,61 @@ def write_onset(conds, outdir, duration):
 
 def get_face(logdir, run, outdir=None):
     log = [x for x in os.listdir(logdir) if x.endswith('.csv') and 'Scanner' in x and '_AB_FaceMatching' in x][-1]
-    df = pd.read_csv(os.path.join(logdir, log))
+    df = pd.read_csv(os.path.join(logdir, log), skip_blank_lines=True)
     block_dur = 18.0
+    trials_per_block = 6
     objs = []
     happ = []
     neut = []
     fear = []
-    fix = [] 
+    fix = []
     current_cond = ''
+    current_trial = 0
     time = 0
     # unsure about fixation accuracy
-    for i,row in df.iterrows():
+    for i, row in df.iterrows():
         try:
             check_cond = row['Condition']
             check_run = row['Run']
-            if 'fixation' in check_cond and run in check_run:
-                fix.append(time)
-                time += block_dur
-            elif 'Happy' in check_cond and current_cond is not check_cond and run in check_run:
+            check_trial = row['Trial']
+            if run is 'A':
+                run_adjust = 0
+            elif run is 'B':
+                run_adjust = 90  # 90 trials in each run
+            if 'Happy' in check_cond and current_cond is not check_cond and run in check_run:
+                time = (check_trial - run_adjust - 1) / trials_per_block * block_dur
                 happ.append(time)
-                time += block_dur
+                # time += (block_dur*multiplier)
                 current_cond = check_cond
+                current_trial = check_trial
             elif 'Neutral' in check_cond and current_cond is not check_cond and run in check_run:
+                time = (check_trial - run_adjust - 1) / trials_per_block * block_dur
                 neut.append(time)
-                time += block_dur
+                # time += (block_dur*multiplier)
                 current_cond = check_cond
+                current_trial = check_trial
             elif 'Fearful' in check_cond and current_cond is not check_cond and run in check_run:
+                time = (check_trial - run_adjust - 1) / trials_per_block * block_dur
                 fear.append(time)
-                time += block_dur
+                # time += (block_dur*multiplier)
                 current_cond = check_cond
+                current_trial = check_trial
             elif 'Object' in check_cond and current_cond is not check_cond and run in check_run:
+                time = (check_trial - run_adjust - 1) / trials_per_block * block_dur
                 objs.append(time)
-                time += block_dur
+                # time += (block_dur*multiplier)
                 current_cond = check_cond
+                current_trial = check_trial
             else:
                 continue
         except TypeError:
-            #skipping blank lines
-            continue        
-    conds = OrderedDict([('fear', fear), ('happy', happ), ('neutral', neut), ('object',objs)])
+            # skipping blank lines
+            continue
+    conds = OrderedDict([('fear', fear), ('happy', happ), ('neutral', neut), ('object', objs)])
     if outdir:
         write_onset(conds, outdir, block_dur)
     return conds
+
 
 def get_carit(logdir, run, outdir=None):
     log = [x for x in os.listdir(logdir) if x.endswith('.csv') and 'wide' in x and 'CARIT' in x][-1]
@@ -85,10 +99,10 @@ def get_carit(logdir, run, outdir=None):
     miss = []
     cr = []
     fa = []
-    countdown = [] #let's not model this for now
+    countdown = []  # let's not model this for now
     time = 0
-    
-    for i,row in df.iterrows():
+
+    for i, row in df.iterrows():
         try:
             check_cond = row['corrRespTrialType']
             check_run = row['nRuns']
@@ -104,7 +118,7 @@ def get_carit(logdir, run, outdir=None):
             else:
                 continue
         except TypeError:
-            #skipping blank lines
+            # skipping blank lines
             continue
     conds = OrderedDict([('Hit', hit), ('Miss', miss), ('corReject', cr), ('falseAlarm', fa)])
     if outdir:
@@ -115,24 +129,23 @@ def get_carit(logdir, run, outdir=None):
 def gen_onsets(subjs, logdir, outdir):
     # need error catching
     for subj in subjs:
-        print('Processing %s...'%subj)
+        print('Processing %s...' % subj)
         subjlogs = os.path.join(logdir, '{}'.format(subj))
         subjout = os.path.join(outdir, 'EVs')
         for i,run in enumerate(['A', 'B'],1):
             try:
-                #get_face(subjlogs, run, os.path.join(subjout, 'task001_run%03d'%i))
-                get_face(subjlogs, run, os.path.join(subjout, 'task-face_run-%02d'%i))
+                # get_face(subjlogs, run, os.path.join(subjout, 'task001_run%03d'%i))
+                get_face(subjlogs, run, os.path.join(subjout, 'task-face_run-%02d' % i))
             except OSError:
-                print('Error: Unable to find face-matching run %d'%i)
-        for i,run in enumerate(['1'],1):
+                print('Error: Unable to find face-matching run %d' % i)
+        for i, run in enumerate(['1'], 1):
             try:
-                #get_gamble(subjlogs, run, os.path.join(subjout, 'task002_run%03d'%i))
-                get_carit(subjlogs, run, os.path.join(subjout, 'task-carit_run-%02d'%i))
+                # get_gamble(subjlogs, run, os.path.join(subjout, 'task002_run%03d'%i))
+                get_carit(subjlogs, run, os.path.join(subjout, 'task-carit_run-%02d' % i))
             except OSError:
-                    print('Error: Unable to find CARIT run %d'%i)
-    
-    
-        
+                print('Error: Unable to find CARIT run %d' % i)
+
+
 if __name__ == '__main__':
     docstr = '\n'.join((__doc__,
 """
