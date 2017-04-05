@@ -124,7 +124,7 @@ RUN cd / && git clone https://github.com/rordenlab/dcm2niix.git && \
 
 # Get bidsconversion
 RUN cd / && git clone https://github.com/yeunkim/bidsconversion.git && \
-    cd bidsconversion && git checkout automate
+    cd bidsconversion && git checkout tasknames
 
 COPY run.py /run.py
 RUN chmod +x /run.py

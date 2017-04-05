@@ -593,24 +593,28 @@ if args.analysis_level == "participant":
                 #         pos = dwi
                 #         # posData.append(pos)
 
-                echospacing = layout.get_metadata(pos)["EffectiveEchoSpacing"] * 1000
-                dwi_stage_dict = OrderedDict([("DiffusionPreprocessing", partial(run_diffusion_processsing,
-                                                                                 posData=pos,
-                                                                                 negData=neg,
-                                                                                 path=args.output_dir,
-                                                                                 subject="sub-%s" % subject_label,
-                                                                                 echospacing=echospacing,
-                                                                                 PEdir=PEdir,
-                                                                                 gdcoeffs="NONE",
-                                                                                 dwiname=dwiname,
-                                                                                 n_cpus=args.n_cpus))])
-                for stage, stage_func in dwi_stage_dict.iteritems():
-                    if stage in args.stages:
-                        # stage_func()
-                        try:
-                            Process(target=stage_func).start()
-                        except:
-                            logging.error("{0} stage ended with error. Please check.".format(stage))
+                try:
+                    echospacing = layout.get_metadata(pos)["EffectiveEchoSpacing"] * 1000
+                    dwi_stage_dict = OrderedDict([("DiffusionPreprocessing", partial(run_diffusion_processsing,
+                                                                                     posData=pos,
+                                                                                     negData=neg,
+                                                                                     path=args.output_dir,
+                                                                                     subject="sub-%s" % subject_label,
+                                                                                     echospacing=echospacing,
+                                                                                     PEdir=PEdir,
+                                                                                     gdcoeffs="NONE",
+                                                                                     dwiname=dwiname,
+                                                                                     n_cpus=args.n_cpus))])
+                    for stage, stage_func in dwi_stage_dict.iteritems():
+                        if stage in args.stages:
+                            # stage_func()
+                            try:
+                                Process(target=stage_func).start()
+                            except:
+                                logging.error("{0} stage ended with error. Please check.".format(stage))
+                except IndexError:
+                    logging.error("There may be missing diffusion data. HCP Pipeline requires diffusion images in both"
+                                  "phase encoding directions")
 
         # logging.info("Total number of DiffusionPreprocessing processes: {0}".format(str(dwinumruns)))
 
