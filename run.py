@@ -727,7 +727,7 @@ if args.analysis_level == "participant":
                                                     extensions=["nii.gz", "nii"])]
             for f in tfmris:
                 taskname = f.split("task-")[1].split("_")[0]
-                taskname = taskname.lower()
+                # taskname = taskname.lower()
                 tasks.append(taskname)
 
             ##check that there are two runs of each task (i.e. AP, PA)
