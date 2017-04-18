@@ -12,7 +12,7 @@ Edited from "gen_banda_onsets.py" created by Mathias Goncalves @ MGH:
     
 Edited by Amber Leaver, 02/27/2017 to remove code for irrelevant tasks and to add new code for CARIT task
 Edited by Amber Leaver, 03/21/2017 to remove correct FaceMatching lines
-Edited by Yeun Kim 03/24/17.
+Last edited by Yeun Kim 04/18/17.
 
 """
 
@@ -29,8 +29,11 @@ def write_onset(conds, outdir, duration):
     for idx,cond in enumerate(conds):
         with open(os.path.join(outdir,'cond%03d.txt'%(idx+1)),'w') as csvfile:
             csvwriter=writer(csvfile, delimiter='\t')
-            for onset in conds[cond]:
-                csvwriter.writerow(['%.1f'%onset, '%.1f'%duration, '%.1f'%1])
+            if not conds[cond]:
+                csvwriter.writerow(['%.1f' % 0, '%.1f' % 0, '%.1f' % 0])
+            else:
+                for onset in conds[cond]:
+                    csvwriter.writerow(['%.1f' % onset, '%.1f' % duration, '%.1f' % 1])
     return
 
 
@@ -143,7 +146,7 @@ def gen_onsets(subjs, logdir, outdir):
                 # get_gamble(subjlogs, run, os.path.join(subjout, 'task002_run%03d'%i))
                 get_carit(subjlogs, run, os.path.join(subjout, 'task-carit_run-%02d' % i))
             except OSError:
-                print('Error: Unable to find CARIT run %d' % i)
+                print('Warning: Unable to find CARIT run %d' % i)
 
 
 if __name__ == '__main__':
