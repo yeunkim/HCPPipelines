@@ -115,8 +115,11 @@ RUN apt-get -y update && \
 # Install dependencies for dicm2niix
 RUN apt-get -y update && apt-get -y install build-essential
 
+#RUN apt-get -y update && \
+#    apt-get -y install pkg-config libyaml-cpp-dev libyaml-cpp0.5 cmake libboost-dev
+
 RUN apt-get -y update && \
-    apt-get -y install pkg-config libyaml-cpp-dev libyaml-cpp0.5 cmake libboost-dev
+    apt-get -y install pkg-config cmake
 
 # Compile dcm2nii
 RUN cd / && git clone https://github.com/rordenlab/dcm2niix.git && \
