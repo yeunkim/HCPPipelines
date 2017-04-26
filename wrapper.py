@@ -42,7 +42,7 @@ if __name__ == '__main__':
             psychopy = "python /psychopy2evs.py -l " + args.EV + " -o " + args.outputdir + " -s " + args.subjID
             subprocess.call(psychopy, shell=True)
 
-        bidsconv = "python /bidsconversion/bin/run.py " + args.sourcedir + ' ' + args.outputdir + ' /dcm2niix/bin/dcm2niibatch ' + '-subj ' + args.subjID + ' -dataset ' + args.dataset
+        bidsconv = "python /bidsconversion/bin/run.py " + args.sourcedir + ' ' + args.outputdir + ' /dcm2niix/build/bin/dcm2niibatch ' + '-subj ' + args.subjID + ' -dataset ' + args.dataset
         subprocess.call(bidsconv, shell=True)
 
         os.mkdir(args.outputdir+ '/' + args.subjID+'_output')
