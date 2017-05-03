@@ -438,8 +438,10 @@ if args.analysis_level == "participant":
                     bvals = [f.filename for f in layout.get(subject=subject_label,
                                                             type='dwi', extensions=["bval"])]
                 dwi_dict = {'bvalFile':[], 'bval':[], 'dwiFile':[], 'direction':[]}
+                ## find number of directions by reading bval files, then create dictionary with bval filename,
+                # number of directions, dwi image file name, and phase encoding direction
                 for bvalfile in bvals:
-                    with open(bvalfile) as f: # get number of directions
+                    with open(bvalfile) as f:
                         bvalues = [bvalue for line in f for bvalue in line.split()]
                     dwi_dict['bvalFile'].append(bvalfile)
                     dwi_dict['bval'].append(len(bvalues) - 1)
