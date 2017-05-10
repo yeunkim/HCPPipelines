@@ -195,6 +195,9 @@ main() {
     sed -i "s/fmri(npts) [0-9]*/fmri(npts) ${FMRI_NPTS}/" ${outdir}/${tasknamebids}_hp200_s4_level1.fsf
     sed -i "s/HCPTASKNAME/${tasknamebids}/" ${outdir}/${tasknamebids}_hp200_s4_level1.fsf
 
+    EVPARENTDIR="$(dirname "${StudyFolder}")"
+    sed -i "s~STUDYFOLDER~${EVPARENTDIR}~g" ${outdir}/${tasknamebids}_hp200_s4_level1.fsf
+
     echo ""
     echo "Level 1 FSF file generated at: "
     echo "  ${outdir}/${tasknamebids}_hp200_s4_level1.fsf"

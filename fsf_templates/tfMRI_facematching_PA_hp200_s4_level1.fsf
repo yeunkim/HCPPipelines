@@ -304,7 +304,7 @@ set fmri(tempfilt_yn1) 1
 set fmri(deriv_yn1) 1
 
 # Custom EV file (EV 1)
-set fmri(custom1) "/output/EVs/task-face_run-02/cond001.txt"
+set fmri(custom1) "/STUDYFOLDER/EVs/task-face_run-02/cond001.txt"
 
 # Orthogonalise EV 1 wrt EV 0
 set fmri(ortho1.0) 0
@@ -353,7 +353,7 @@ set fmri(tempfilt_yn2) 1
 set fmri(deriv_yn2) 1
 
 # Custom EV file (EV 2)
-set fmri(custom2) "/output/EVs/task-face_run-02/cond002.txt"
+set fmri(custom2) "/STUDYFOLDER/EVs/task-face_run-02/cond002.txt"
 
 # Orthogonalise EV 2 wrt EV 0
 set fmri(ortho2.0) 0
@@ -402,7 +402,7 @@ set fmri(tempfilt_yn3) 1
 set fmri(deriv_yn3) 1
 
 # Custom EV file (EV 3)
-set fmri(custom3) "/output/EVs/task-face_run-02/cond003.txt"
+set fmri(custom3) "/STUDYFOLDER/EVs/task-face_run-02/cond003.txt"
 
 # Orthogonalise EV 3 wrt EV 0
 set fmri(ortho3.0) 0
@@ -451,7 +451,7 @@ set fmri(tempfilt_yn4) 1
 set fmri(deriv_yn4) 1
 
 # Custom EV file (EV 4)
-set fmri(custom4) "/output/EVs/task-face_run-02/cond004.txt"
+set fmri(custom4) "/STUDYFOLDER/EVs/task-face_run-02/cond004.txt"
 
 # Orthogonalise EV 4 wrt EV 0
 set fmri(ortho4.0) 0
