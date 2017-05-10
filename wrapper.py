@@ -42,15 +42,18 @@ if __name__ == '__main__':
             psychopy = "python /psychopy2evs.py -l " + args.EV + " -o " + args.outputdir + " -s " + args.subjID
             subprocess.call(psychopy, shell=True)
 
-        bidsconv = "python /bidsconversion/bin/run.py " + args.sourcedir + ' ' + args.outputdir + ' /dcm2niix/build/bin/dcm2niibatch ' + '-subj ' + args.subjID + ' -dataset ' + args.dataset
-        subprocess.call(bidsconv, shell=True)
+        if not os.path.exists(args.outputdir + '/' + args.subjID + '_bids' ):
+            bidsconv = "python /bidsconversion/bin/run.py " + args.sourcedir + ' ' + args.outputdir + ' /dcm2niix/build/bin/dcm2niibatch ' + '-subj ' + args.subjID + ' -dataset ' + args.dataset
+            subprocess.call(bidsconv, shell=True)
 
-        os.mkdir(args.outputdir+ '/' + args.subjID+'_output')
+        if not os.path.exists(args.outputdir+ '/' + args.subjID+'_output'):
+            os.mkdir(args.outputdir+ '/' + args.subjID+'_output')
 
         # move previously created log files into logs directory
         logsfpath = os.path.join(args.outputdir, args.subjID+'_output', "logs")
-        os.mkdir(logsfpath)
-        shutil.move(os.path.join(args.outputdir, "bids_conversion_logs"), os.path.join(logsfpath, "bids_conversion_logs"))
+        if not os.path.exists(logsfpath):
+            os.mkdir(logsfpath)
+            shutil.move(os.path.join(args.outputdir, "bids_conversion_logs"), os.path.join(logsfpath, "bids_conversion_logs"))
 
         runpy = "/run.py " + args.outputdir+'/'+args.subjID+'_bids/'+args.dataset + ' '+ args.outputdir+'/'+args.subjID+'_output '+" participant --n_cpus " + str(args.n_cpus) + ' ' + '--license_key ' + args.license_key + ' --stages ' + ' '.join(args.stages)
         subprocess.call(runpy, shell=True)
