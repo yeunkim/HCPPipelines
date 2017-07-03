@@ -2,11 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="852e787a-b50f-49d6-bd62-39233eae4789" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/fsf_templates/scripts/generate_level1_fsf.sh" afterPath="$PROJECT_DIR$/fsf_templates/scripts/generate_level1_fsf.sh" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/fsf_templates/tfMRI_carit_PA_hp200_s4_level1.fsf" afterPath="$PROJECT_DIR$/fsf_templates/tfMRI_carit_PA_hp200_s4_level1.fsf" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/fsf_templates/tfMRI_facematching_AP_hp200_s4_level1.fsf" afterPath="$PROJECT_DIR$/fsf_templates/tfMRI_facematching_AP_hp200_s4_level1.fsf" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/fsf_templates/tfMRI_facematching_PA_hp200_s4_level1.fsf" afterPath="$PROJECT_DIR$/fsf_templates/tfMRI_facematching_PA_hp200_s4_level1.fsf" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/wrapper.py" afterPath="$PROJECT_DIR$/wrapper.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/psychopy2evs.py" afterPath="$PROJECT_DIR$/psychopy2evs.py" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
@@ -24,18 +20,18 @@
       <file leaf-file-name="run.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/run.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="75">
-              <caret line="721" column="63" lean-forward="true" selection-start-line="721" selection-start-column="63" selection-end-line="721" selection-end-column="63" />
+            <state relative-caret-position="103">
+              <caret line="721" column="63" lean-forward="false" selection-start-line="721" selection-start-column="63" selection-end-line="721" selection-end-column="63" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="generate_level1_fsf.sh" pinned="false" current-in-tab="true">
+      <file leaf-file-name="generate_level1_fsf.sh" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/fsf_templates/scripts/generate_level1_fsf.sh">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="554">
-              <caret line="188" column="32" lean-forward="false" selection-start-line="188" selection-start-column="32" selection-end-line="188" selection-end-column="32" />
+            <state relative-caret-position="435">
+              <caret line="181" column="24" lean-forward="false" selection-start-line="181" selection-start-column="24" selection-end-line="181" selection-end-column="24" />
               <folding />
             </state>
           </provider>
@@ -54,18 +50,18 @@
       <file leaf-file-name="wrapper.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/wrapper.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="588">
-              <caret line="47" column="0" lean-forward="true" selection-start-line="47" selection-start-column="0" selection-end-line="47" selection-end-column="0" />
+            <state relative-caret-position="56">
+              <caret line="4" column="0" lean-forward="true" selection-start-line="4" selection-start-column="0" selection-end-line="4" selection-end-column="0" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="psychopy2evs.py" pinned="false" current-in-tab="false">
+      <file leaf-file-name="psychopy2evs.py" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/psychopy2evs.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-312">
-              <caret line="47" column="13" lean-forward="false" selection-start-line="47" selection-start-column="13" selection-end-line="47" selection-end-column="13" />
+            <state relative-caret-position="487">
+              <caret line="133" column="22" lean-forward="true" selection-start-line="133" selection-start-column="22" selection-end-line="133" selection-end-column="22" />
               <folding />
             </state>
           </provider>
@@ -94,12 +90,13 @@
         <option value="$PROJECT_DIR$/fsf_templates/tfMRI_facematching_AP_hp200_s4_level1.fsf" />
         <option value="$PROJECT_DIR$/fsf_templates/tfMRI_facematching_PA_hp200_s4_level1.fsf" />
         <option value="$PROJECT_DIR$/fsf_templates/scripts/generate_level1_fsf.sh" />
+        <option value="$PROJECT_DIR$/psychopy2evs.py" />
       </list>
     </option>
   </component>
   <component name="ProjectFrameBounds">
-    <option name="x" value="415" />
-    <option name="y" value="21" />
+    <option name="x" value="-170" />
+    <option name="y" value="36" />
     <option name="width" value="1623" />
     <option name="height" value="1059" />
   </component>
@@ -264,7 +261,7 @@
     <servers />
   </component>
   <component name="ToolWindowManager">
-    <frame x="415" y="21" width="1623" height="1059" extended-state="0" />
+    <frame x="-170" y="36" width="1623" height="1059" extended-state="0" />
     <editor active="true" />
     <layout>
       <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.21318546" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
@@ -602,30 +599,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/Dockerfile">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="390">
-          <caret line="120" column="18" lean-forward="false" selection-start-line="120" selection-start-column="18" selection-end-line="120" selection-end-column="18" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/psychopy2evs.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-312">
-          <caret line="47" column="13" lean-forward="false" selection-start-line="47" selection-start-column="13" selection-end-line="47" selection-end-column="13" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/wrapper.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="588">
-          <caret line="47" column="0" lean-forward="true" selection-start-line="47" selection-start-column="0" selection-end-line="47" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/fsf_templates/tfMRI_facematching_PA_hp200_s4_level1.fsf">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="260">
@@ -650,18 +623,42 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/run.py">
+    <entry file="file://$PROJECT_DIR$/fsf_templates/scripts/generate_level1_fsf.sh">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="75">
-          <caret line="721" column="63" lean-forward="true" selection-start-line="721" selection-start-column="63" selection-end-line="721" selection-end-column="63" />
+        <state relative-caret-position="435">
+          <caret line="181" column="24" lean-forward="false" selection-start-line="181" selection-start-column="24" selection-end-line="181" selection-end-column="24" />
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/fsf_templates/scripts/generate_level1_fsf.sh">
+    <entry file="file://$PROJECT_DIR$/Dockerfile">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="554">
-          <caret line="188" column="32" lean-forward="false" selection-start-line="188" selection-start-column="32" selection-end-line="188" selection-end-column="32" />
+        <state relative-caret-position="390">
+          <caret line="120" column="18" lean-forward="false" selection-start-line="120" selection-start-column="18" selection-end-line="120" selection-end-column="18" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/run.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="103">
+          <caret line="721" column="63" lean-forward="false" selection-start-line="721" selection-start-column="63" selection-end-line="721" selection-end-column="63" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/wrapper.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="56">
+          <caret line="4" column="0" lean-forward="true" selection-start-line="4" selection-start-column="0" selection-end-line="4" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/psychopy2evs.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="487">
+          <caret line="133" column="22" lean-forward="true" selection-start-line="133" selection-start-column="22" selection-end-line="133" selection-end-column="22" />
           <folding />
         </state>
       </provider>

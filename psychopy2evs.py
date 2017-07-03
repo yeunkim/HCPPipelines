@@ -140,7 +140,9 @@ def gen_onsets(subjs, logdir, outdir):
                 # get_face(subjlogs, run, os.path.join(subjout, 'task001_run%03d'%i))
                 get_face(subjlogs, run, os.path.join(subjout, 'task-face_run-%02d' % i))
             except OSError:
-                print('Error: Unable to find face-matching run %d' % i)
+                print('Warning: Unable to find face-matching run %d' % i)
+            except IndexError:
+                print('Warning: Unable to find face-matching run %d' % i)
         for i, run in enumerate(['1'], 1):
             try:
                 # get_gamble(subjlogs, run, os.path.join(subjout, 'task002_run%03d'%i))
