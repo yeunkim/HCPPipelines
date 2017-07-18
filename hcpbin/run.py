@@ -578,10 +578,10 @@ if args.analysis_level == "participant":
                         dwi = dwi.filename
                         if "-" in layout.get_metadata(dwi)["PhaseEncodingDirection"]:
                             neg = dwi
-                            # negData.append(neg)
+                            negData.append(neg)
                         else:
                             pos = dwi
-                            # posData.append(pos)
+                            posData.append(pos)
 
                 # assert len(dwis) <= 2
                 # for dwi in dwis:
@@ -595,26 +595,31 @@ if args.analysis_level == "participant":
 
                 try:
                     echospacing = layout.get_metadata(pos)["EffectiveEchoSpacing"] * 1000
-                    dwi_stage_dict = OrderedDict([("DiffusionPreprocessing", partial(run_diffusion_processsing,
-                                                                                     posData=pos,
-                                                                                     negData=neg,
-                                                                                     path=args.output_dir,
-                                                                                     subject="sub-%s" % subject_label,
-                                                                                     echospacing=echospacing,
-                                                                                     PEdir=PEdir,
-                                                                                     gdcoeffs="NONE",
-                                                                                     dwiname=dwiname,
-                                                                                     n_cpus=args.n_cpus))])
-                    for stage, stage_func in dwi_stage_dict.iteritems():
-                        if stage in args.stages:
-                            # stage_func()
-                            try:
-                                Process(target=stage_func).start()
-                            except:
-                                logging.error("{0} stage ended with error. Please check.".format(stage))
                 except IndexError:
                     logging.error("There may be missing diffusion data. HCP Pipeline requires diffusion images in both"
                                   "phase encoding directions")
+
+            posDataStr = '@'.join(posData)
+            negDataStr = '@'.join(negData)
+
+            dwi_stage_dict = OrderedDict([("DiffusionPreprocessing", partial(run_diffusion_processsing,
+                                                                             posData=posDataStr,
+                                                                             negData=negDataStr,
+                                                                             path=args.output_dir,
+                                                                             subject="sub-%s" % subject_label,
+                                                                             echospacing=echospacing,
+                                                                             PEdir=PEdir,
+                                                                             gdcoeffs="NONE",
+                                                                             dwiname='Diffusion',
+                                                                             n_cpus=args.n_cpus))])
+            for stage, stage_func in dwi_stage_dict.iteritems():
+                if stage in args.stages:
+                    # stage_func()
+                    try:
+                        Process(target=stage_func).start()
+                    except:
+                        logging.error("{0} stage ended with error. Please check.".format(stage))
+
 
         # logging.info("Total number of DiffusionPreprocessing processes: {0}".format(str(dwinumruns)))
 

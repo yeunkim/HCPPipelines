@@ -126,16 +126,22 @@ RUN cd / && git clone https://github.com/yeunkim/dcm2niix.git && \
 RUN cd / && git clone https://github.com/yeunkim/bidsconversion.git && \
     cd bidsconversion && git checkout     spemaps
 
-COPY run.py /run.py
-RUN chmod +x /run.py
-COPY wrapper.py /wrapper.py
-RUN chmod +x /wrapper.py
-COPY genStatusFile.py /genStatusFile.py
-RUN chmod +x /genStatusFile.py
-COPY psychopy2evs.py /psychopy2evs.py
-RUN chmod +x /psychopy2evs.py
+COPY hcpbin /hcpbin
+RUN chmod +x /hcpbin/run.py
+RUN chmod +x /hcpbin/wrapper.py
 COPY fsf_templates /fsf_templates
 RUN chmod +x /fsf_templates/scripts/generate_level1_fsf.sh
+
+#COPY run.py /run.py
+#RUN chmod +x /run.py
+#COPY wrapper.py /wrapper.py
+#RUN chmod +x /wrapper.py
+#COPY genStatusFile.py /genStatusFile.py
+#RUN chmod +x /genStatusFile.py
+#COPY psychopy2evs.py /psychopy2evs.py
+#RUN chmod +x /psychopy2evs.py
+
+
 COPY TaskfMRIAnalysis/TaskfMRIAnalysis.v1.0.sh /opt/HCP-Pipelines/TaskfMRIAnalysis/TaskfMRIAnalysis.v1.0.sh
 COPY TaskfMRIAnalysis/TaskfMRIAnalysis.v2.0.sh /opt/HCP-Pipelines/TaskfMRIAnalysis/TaskfMRIAnalysis.v2.0.sh
 RUN chmod +x /opt/HCP-Pipelines/TaskfMRIAnalysis/TaskfMRIAnalysis.v1.0.sh

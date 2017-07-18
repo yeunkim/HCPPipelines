@@ -6,11 +6,14 @@ Also launches run.py.
 """
 
 import os, shutil
+import sys
 import argparse
 import traceback
 import sys
 import subprocess
 from argparse import RawTextHelpFormatter
+sys.path.append('/hcpbin')
+from psychopy2evs import gen_onsets
 
 if __name__ == '__main__':
 
@@ -39,8 +42,9 @@ if __name__ == '__main__':
     try:
         # generate EV files
         if args.EV is not None:
-            psychopy = "python /psychopy2evs.py -l " + args.EV + " -o " + args.outputdir + " -s " + args.subjID
-            subprocess.call(psychopy, shell=True)
+            gen_onsets(args.subjID, args.EV, args.outputdir)
+            # psychopy = "python /psychopy2evs.py -l " + args.EV + " -o " + args.outputdir + " -s " + args.subjID
+            # subprocess.call(psychopy, shell=True)
 
         if not os.path.exists(args.outputdir + '/' + args.subjID + '_bids' ):
             bidsconv = "python /bidsconversion/bin/run.py " + args.sourcedir + ' ' + args.outputdir + ' /dcm2niix/build/bin/dcm2niibatch ' + '-subj ' + args.subjID + ' -dataset ' + args.dataset
