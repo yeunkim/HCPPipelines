@@ -149,5 +149,5 @@ RUN chmod +x /opt/HCP-Pipelines/TaskfMRIAnalysis/TaskfMRIAnalysis.v2.0.sh
 
 COPY version /version
 
-ENTRYPOINT ["/wrapper.py"]
+ENTRYPOINT ["/hcpbin/wrapper.py"]
 #ENTRYPOINT ["/run.py"]
