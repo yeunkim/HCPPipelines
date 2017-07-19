@@ -131,24 +131,24 @@ def get_carit(logdir, run, outdir=None):
 
 def gen_onsets(subjs, logdir, outdir):
     # need error catching
-    for subj in subjs:
-        print('Processing %s...' % subj)
-        subjlogs = os.path.join(logdir, '{}'.format(subj))
-        subjout = os.path.join(outdir, 'EVs')
-        for i,run in enumerate(['A', 'B'],1):
-            try:
-                # get_face(subjlogs, run, os.path.join(subjout, 'task001_run%03d'%i))
-                get_face(subjlogs, run, os.path.join(subjout, 'task-face_run-%02d' % i))
-            except OSError:
-                print('Warning: Unable to find face-matching run %d' % i)
-            except IndexError:
-                print('Warning: Unable to find face-matching run %d' % i)
-        for i, run in enumerate(['1'], 1):
-            try:
-                # get_gamble(subjlogs, run, os.path.join(subjout, 'task002_run%03d'%i))
-                get_carit(subjlogs, run, os.path.join(subjout, 'task-carit_run-%02d' % i))
-            except OSError:
-                print('Warning: Unable to find CARIT run %d' % i)
+    # for subj in subjs:
+    print('Processing %s...' % subjs)
+    subjlogs = os.path.join(logdir, '{}'.format(subjs))
+    subjout = os.path.join(outdir, 'EVs')
+    for i,run in enumerate(['A', 'B'],1):
+        try:
+            # get_face(subjlogs, run, os.path.join(subjout, 'task001_run%03d'%i))
+            get_face(subjlogs, run, os.path.join(subjout, 'task-face_run-%02d' % i))
+        except OSError:
+            print('Warning: Unable to find face-matching run %d' % i)
+        except IndexError:
+            print('Warning: Unable to find face-matching run %d' % i)
+    for i, run in enumerate(['1'], 1):
+        try:
+            # get_gamble(subjlogs, run, os.path.join(subjout, 'task002_run%03d'%i))
+            get_carit(subjlogs, run, os.path.join(subjout, 'task-carit_run-%02d' % i))
+        except OSError:
+            print('Warning: Unable to find CARIT run %d' % i)
 
 
 if __name__ == '__main__':
