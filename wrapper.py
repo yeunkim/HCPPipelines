@@ -33,14 +33,17 @@ if __name__ == '__main__':
                                  'DiffusionPreprocessing', 'generateLevel1fsf','TaskfMRIAnalysis'])
     parser.add_argument('-EV', dest='EV', help='Parent directory which contains folders with Psychopy output.\n'
                                                'This will generate EV files compatible for FSL task fmri analysis', required=False)
+    parser.add_argument('--fslEV', help='Indicates that the EV folder path given contains FSL compatible EV files.\n'
+                                         'No conversion is required.', action='store_true', required=False)
 
     args = parser.parse_args()
 
     try:
         # generate EV files
         if args.EV is not None:
-            psychopy = "python /psychopy2evs.py -l " + args.EV + " -o " + args.outputdir + " -s " + args.subjID
-            subprocess.call(psychopy, shell=True)
+            if not args.fslEV:
+                psychopy = "python /psychopy2evs.py -l " + args.EV + " -o " + args.outputdir + " -s " + args.subjID
+                subprocess.call(psychopy, shell=True)
 
         if not os.path.exists(os.path.join(args.outputdir, args.subjID+'_bids')):
             bidsconv = "python /bidsconversion/bin/run.py " + args.sourcedir + ' ' + args.outputdir + ' /dcm2niix/build/bin/dcm2niibatch ' + '-subj ' + args.subjID + ' -dataset ' + args.dataset
