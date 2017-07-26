@@ -29,20 +29,23 @@ if __name__ == '__main__':
     parser.add_argument('--stages', help='Which stages to run. Space separated list.',
                         nargs="+", choices=['PreFreeSurfer', 'FreeSurfer',
                                             'PostFreeSurfer', 'fMRIVolume',
-                                            'fMRISurface', 'DiffusionPreprocessing',
+                                            'fMRISurface', 'DiffusionPreprocessing', 'melodic',
                                             'generateLevel1fsf','TaskfMRIAnalysis'],
                         default=['PreFreeSurfer', 'FreeSurfer', 'PostFreeSurfer',
                                  'fMRIVolume', 'fMRISurface',
-                                 'DiffusionPreprocessing', 'generateLevel1fsf','TaskfMRIAnalysis'])
+                                 'DiffusionPreprocessing','melodic', 'generateLevel1fsf','TaskfMRIAnalysis'])
     parser.add_argument('-EV', dest='EV', help='Parent directory which contains folders with Psychopy output.\n'
                                                'This will generate EV files compatible for FSL task fmri analysis', required=False)
+    parser.add_argument('--fslEV', help='Indicates that the EV folder path given contains FSL-compatible EV files. \n'
+                                        'No conversion is required.', action='store_true', required=False)
 
     args = parser.parse_args()
 
     try:
         # generate EV files
         if args.EV is not None:
-            gen_onsets(args.subjID, args.EV, args.outputdir)
+            if not args.fslEV:
+                gen_onsets(args.subjID, args.EV, args.outputdir)
             # psychopy = "python /psychopy2evs.py -l " + args.EV + " -o " + args.outputdir + " -s " + args.subjID
             # subprocess.call(psychopy, shell=True)
 
