@@ -304,13 +304,13 @@ def run_melodic(**args):
     args.update(os.environ)
     cmd = '/fix1.06a/hcp_melodic_multi_run ' + \
           '{fMRI_data} ' + \
-        '{hp}' + \
+        '{hp} ' + \
         '{concatName}'
     cmd = cmd.format(**args)
     t = time.time()
     logging.info(" {0} : Running melodic".format(datetime.datetime.utcnow().strftime("%a %b %d %H:%M:%S %Z %Y")))
     logging.info(cmd)
-    run(cmd, cwd=args["path"], env={"OMP_NUM_THREADS": str(args["n_cpus"])}, stage='melodic', filename='_{0}'.format(args["fMRI_data"]), subject=args["subject"])
+    run(cmd, cwd=args["path"], env={"OMP_NUM_THREADS": str(args["n_cpus"])}, stage='melodic', filename='_{0}'.format(args["concatName"]), subject=args["subject"])
     elapsed = time.time() - t
     elapsed = elapsed / 60
     logging.info("Finished running melodic. Time duration: {0} minutes".format(str(elapsed)))
@@ -616,16 +616,6 @@ if args.analysis_level == "participant":
                             pos = dwi
                             posData.append(pos)
 
-                # assert len(dwis) <= 2
-                # for dwi in dwis:
-                #     dwi = dwi.filename
-                #     if "-" in layout.get_metadata(dwi)["PhaseEncodingDirection"]:
-                #         neg = dwi
-                #         # negData.append(neg)
-                #     else:
-                #         pos = dwi
-                #         # posData.append(pos)
-
                 try:
                     echospacing = layout.get_metadata(pos)["EffectiveEchoSpacing"] * 1000
                 except IndexError:
@@ -746,23 +736,27 @@ if args.analysis_level == "participant":
         ### Run melodic on all fMRI data
         hp= 2000
         concatName='fMRImultirun'
+        data4D = []
 
-        data4D = "@".join(bolds)
-        # for fmritcs in bolds:
-            # fmriname = "_".join(fmritcs.split("sub-")[-1].split("_")[1:-1]).split(".")[0]
+        for fmritcs in bolds:
+            fmriname = "_".join(fmritcs.split("sub-")[-1].split("_")[1:-1]).split(".")[0]
             # data4D = os.path.join(args.output_dir, "sub-%s"%subject_label, fmriname, "%s_orig.nii.gz"%fmriname)
+            data4D.append(os.path.join(args.output_dir, "sub-%s"%subject_label, "MNINonLinear","Results", fmriname,"{0}.nii.gz".format(fmriname)))
+        data4Dstr = "@".join(data4D)
 
-        func_stages_dict = OrderedDict(["melodic", partial(run_melodic,
-                                                          subject="sub-%s"%subject_label,
-                                                          fMRI_data=data4D,
-                                                          hp=hp,
-                                                          concatName=concatName,
-                                                          n_cpus=args.n_cpus)])
+        melodic_stages_dict = OrderedDict([("melodic", partial(run_melodic,
+                                                               path=args.output_dir,
+                                                               subject="sub-%s"%subject_label,
+                                                               fMRI_data=data4Dstr,
+                                                               hp=hp,
+                                                               concatName=concatName,
+                                                               n_cpus=args.n_cpus))
+                                           ])
 
-        for stage, stage_func in func_stages_dict.iteritems():
+        for stage, stage_func in melodic_stages_dict.iteritems():
             if stage in args.stages:
                 try:
-                    stage_func
+                    stage_func()
                 except:
                     logging.error("{0} stage ended with error. Please check. Continuing...".format(stage))
 
