@@ -9,8 +9,8 @@ wget https://cran.r-project.org/src/contrib/multcomp_1.4-6.tar.gz
 wget https://cran.r-project.org/src/contrib/coin_1.2-1.tar.gz
 wget https://cran.r-project.org/src/contrib/lattice_0.20-35.tar.gz
 wget https://cran.r-project.org/src/contrib/zoo_1.8-0.tar.gz
-wget https://cran.r-project.org/src/contrib/sandwich_2.3-4.tar.gz
-wget https://cran.r-project.org/src/contrib/party_1.2-3.tar.gz
+wget https://cran.r-project.org/src/contrib/sandwich_2.4-0.tar.gz
+wget https://cran.r-project.org/src/contrib/Archive/party/party_1.0-25.tar.gz
 
 wget https://cran.r-project.org/src/contrib/e1071_1.6-8.tar.gz
 wget https://cran.r-project.org/src/contrib/kernlab_0.9-25.tar.gz

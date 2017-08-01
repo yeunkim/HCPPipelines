@@ -140,7 +140,7 @@ RUN sh -c 'echo "deb http://cran.rstudio.com/bin/linux/ubuntu trusty/" >> /etc/a
     apt-get -y install r-base
 
 # Get ICA FIX
-RUN cd / && wget http://users.bmap.ucla.edu/~yeunkim/ftp/fix1.065.dhcp5.tar.gz -O fix.tar.gz && \
+RUN cd / && wget http://users.bmap.ucla.edu/~yeunkim/ftp/fix1.065.dhcp8.tar.gz -O fix.tar.gz && \
     tar xvfz fix.tar.gz
 RUN mv /fix1.065 /fix1.06a
 

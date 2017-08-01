@@ -29,7 +29,7 @@ if __name__ == '__main__':
     parser.add_argument('--stages', help='Which stages to run. Space separated list.',
                         nargs="+", choices=['PreFreeSurfer', 'FreeSurfer',
                                             'PostFreeSurfer', 'fMRIVolume',
-                                            'fMRISurface', 'DiffusionPreprocessing', 'melodic',
+                                            'fMRISurface', 'DiffusionPreprocessing', 'melodic', 'fix',
                                             'generateLevel1fsf','TaskfMRIAnalysis'],
                         default=['PreFreeSurfer', 'FreeSurfer', 'PostFreeSurfer',
                                  'fMRIVolume', 'fMRISurface',
