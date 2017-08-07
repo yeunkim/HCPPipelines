@@ -332,36 +332,36 @@ def run_melodic_singlerun(**args):
     elapsed = elapsed / 60
     logging.info("Finished running melodic single run. Time duration: {0} minutes".format(str(elapsed)))
 
-def run_fix(**args):
+def run_task_fmri_analysis_clean(**args):
     print(args)
     args.update(os.environ)
-    cmd = '/fix1.06a/hcp_fix_only_multi_run ' + \
-        '{fMRI_data} ' + \
-        '{hp}' + \
-        '{concatName}'
+    cmd = '{HCPPIPEDIR}/TaskfMRIAnalysis/TaskfMRIAnalysis.sh ' + \
+        '--path={path} ' + \
+        '--subject={subject} ' + \
+        '--lvl1tasks={lvl1tasks} ' + \
+        '--lvl1fsfs={lvl1fsfs} ' + \
+        '--lvl2task={lvl2task} ' + \
+        '--lvl2fsf={lvl2fsf} ' + \
+        '--lowresmesh={lowresmesh} ' + \
+        '--grayordinatesres="{grayordinatesres:s}" ' + \
+        '--origsmoothingFWHM="{origsmoothingFWHM}" ' + \
+        '--confound={confound} ' + \
+        '--finalsmoothingFWHM={finalsmoothingFWHM} ' + \
+        '--temporalfilter={temporalfilter} ' + \
+        '--vba={vba} ' + \
+        '--regname={regname} ' + \
+        '--parcellation={parcellation} ' + \
+        '--parcellationfile={parcellationfile} ' + \
+        '--printcom=""'
     cmd = cmd.format(**args)
     t = time.time()
-    logging.info(" {0} : Running fix".format(datetime.datetime.utcnow().strftime("%a %b %d %H:%M:%S %Z %Y")))
+    logging.info(" {0} : Running TaskfMRIAnalysisClean".format(datetime.datetime.utcnow().strftime("%a %b %d %H:%M:%S %Z %Y")))
     logging.info(cmd)
-    run(cmd, cwd=args["path"], env={"OMP_NUM_THREADS": str(args["n_cpus"])}, stage='fix', filename='_{0}'.format(args["concatName"]), subject=args["subject"])
+    # print('\n', cmd, '\n')
+    run(cmd, cwd=args["path"], env={"OMP_NUM_THREADS": str(args["n_cpus"])}, stage='TaskfMRIAnalysisClean', filename='_{0}'.format(args["lvl1tasks"]),subject=args["subject"])
     elapsed = time.time() - t
     elapsed = elapsed / 60
-    logging.info("Finished running fix. Time duration: {0} minutes".format(str(elapsed)))
-
-def run_fix_singlerun(**args):
-    print(args)
-    args.update(os.environ)
-    cmd = '/fix1.06a/hcp_fix_only ' + \
-        '{fMRI_data} ' + \
-        '{hp}'
-    cmd = cmd.format(**args)
-    t = time.time()
-    logging.info(" {0} : Running fix single run".format(datetime.datetime.utcnow().strftime("%a %b %d %H:%M:%S %Z %Y")))
-    logging.info(cmd)
-    run(cmd, cwd=args["path"], env={"OMP_NUM_THREADS": str(args["n_cpus"])}, stage='fix_singlerun', filename='_{0}'.format(os.path.basename(args["fMRI_data"]).split('.')[0]), subject=args["subject"])
-    elapsed = time.time() - t
-    elapsed = elapsed / 60
-    logging.info("Finished running fix single run. Time duration: {0} minutes".format(str(elapsed)))
+    logging.info("Finished running TaskfMRIAnalysisClean. Time duration: {0} minutes".format(str(elapsed)))
 
 def func_stages(stages_dict):
     for stage, stage_func in stages_dict.iteritems():
@@ -393,7 +393,7 @@ parser.add_argument('--stages', help='Which stages to run. Space separated list.
                    nargs="+", choices=['PreFreeSurfer', 'FreeSurfer',
                                        'PostFreeSurfer', 'fMRIVolume',
                                        'fMRISurface', 'DiffusionPreprocessing',
-                                       'melodic', 'fix', 'generateLevel1fsf', 'TaskfMRIAnalysis'],
+                                       'melodic', 'generateLevel1fsf', 'TaskfMRIAnalysis', 'TaskfMRIAnalysisClean'],
                    default=['PreFreeSurfer', 'FreeSurfer', 'PostFreeSurfer',
                             'fMRIVolume', 'fMRISurface',
                             'DiffusionPreprocessing', 'melodic', 'generateLevel1fsf', 'TaskfMRIAnalysis'])
@@ -772,78 +772,55 @@ if args.analysis_level == "participant":
         try:
             pathtofunc = os.path.join(args.output_dir, "sub-%s" % subject_label, "MNINonLinear", "Results")
             funcfolders = [f for f in os.listdir(pathtofunc) if os.path.isdir(os.path.join(pathtofunc, f))]
-            tasknames = [f.split("task-")[1].split("_")[0] for f in funcfolders]
-            for task in set(tasknames):
-                multiruns = [ os.path.join(pathtofunc, f, "{0}.nii.gz".format(f)) for f in funcfolders if task in f]
-                if len(multiruns) > 1:
-                    data4Dstr = "@".join(multiruns)
-                    concatName = "task-{0}_multirun".format(task)
-                    melodic_stages_dict = OrderedDict([("melodic", partial(run_melodic,
-                                                                           path=args.output_dir,
-                                                                           subject="sub-%s"%subject_label,
-                                                                           fMRI_data=data4Dstr,
-                                                                           hp=hp,
-                                                                           concatName=concatName,
-                                                                           n_cpus=args.n_cpus))
-                                                       ])
-
-                    for stage, stage_func in melodic_stages_dict.iteritems():
-                        if stage in args.stages:
-                            stage_func()
-                elif len(multiruns) == 1:
-                    data4Dstr = multiruns[0]
-                    melodic_stages_dict = OrderedDict([("melodic", partial(run_melodic_singlerun,
-                                                                           path=args.output_dir,
-                                                                           subject="sub-%s" % subject_label,
-                                                                           fMRI_data=data4Dstr,
-                                                                           hp=hp,
-                                                                           n_cpus=args.n_cpus))
-                                                       ])
-
-                    for stage, stage_func in melodic_stages_dict.iteritems():
-                        if stage in args.stages:
-                            stage_func()
+            # tasknames = [f.split("task-")[1].split("_")[0] for f in funcfolders]
+            # for task in set(tasknames):
+            #     multiruns = [ os.path.join(pathtofunc, f, "{0}.nii.gz".format(f)) for f in funcfolders if task in f]
+            #     if len(multiruns) > 1:
+            #         data4Dstr = "@".join(multiruns)
+            #         concatName = "task-{0}_multirun".format(task)
+            #         melodic_stages_dict = OrderedDict([("melodic", partial(run_melodic,
+            #                                                                path=args.output_dir,
+            #                                                                subject="sub-%s"%subject_label,
+            #                                                                fMRI_data=data4Dstr,
+            #                                                                hp=hp,
+            #                                                                concatName=concatName,
+            #                                                                n_cpus=args.n_cpus))
+            #                                            ])
             #
+            #         for stage, stage_func in melodic_stages_dict.iteritems():
+            #             if stage in args.stages:
+            #                 stage_func()
+            #     elif len(multiruns) == 1:
+            #         data4Dstr = multiruns[0]
+            #         melodic_stages_dict = OrderedDict([("melodic", partial(run_melodic_singlerun,
+            #                                                                path=args.output_dir,
+            #                                                                subject="sub-%s" % subject_label,
+            #                                                                fMRI_data=data4Dstr,
+            #                                                                hp=hp,
+            #                                                                n_cpus=args.n_cpus))
+            #                                            ])
+            #
+            #         for stage, stage_func in melodic_stages_dict.iteritems():
+            #             if stage in args.stages:
+            #                 stage_func()
+            funcfiles = [os.path.join(pathtofunc, f, "{0}.nii.gz".format(f)) for f in os.listdir(pathtofunc) if os.path.isdir(os.path.join(pathtofunc, f))]
+            for fmri in funcfiles:
+                melodic_stages_dict = OrderedDict([("melodic", partial(run_melodic,
+                                                                       path=args.output_dir,
+                                                                       subject="sub-%s" % subject_label,
+                                                                       fMRI_data=fmri,
+                                                                       hp=hp,
+                                                                       concatName=fmri,
+                                                                       n_cpus=args.n_cpus))
+                                                   ])
+
+                for stage, stage_func in melodic_stages_dict.iteritems():
+                    if stage in args.stages:
+                        stage_func()
         except:
             # print(traceback.print_exc(file=sys.stdout))
             logging.error("MELODIC stage ended with error. Please check. Continuing...")
-        ### FIX
 
-        try:
-            pathtofunc = os.path.join(args.output_dir, "sub-%s" % subject_label, "MNINonLinear", "Results")
-            funcfolders = [f for f in os.listdir(pathtofunc) if os.path.isdir(os.path.join(pathtofunc, f))]
-            tasknames = [f.split("task-")[1].split("_")[0] for f in funcfolders]
-            for task in set(tasknames):
-                multiruns = [os.path.join(pathtofunc, f, "{0}.nii.gz".format(f)) for f in funcfolders if task in f]
-                if len(multiruns) > 1:
-                    data4Dstr = "@".join(multiruns)
-                    concatName = "task-{0}_multirun".format(task)
-
-                    fix_stages_dict = OrderedDict([("fix", partial(run_fix,
-                                                                  path=args.output_dir,
-                                                                   subject="sub-%s"%subject_label,
-                                                                   fMRI_data=data4Dstr,
-                                                                   hp=hp,
-                                                                   concatName=concatName,
-                                                                   n_cpus=args.n_cpus))
-                                                   ])
-                    for stage, stage_func in fix_stages_dict.iteritems():
-                        if stage in args.stages:
-                            stage_func()
-                elif len(multiruns) == 1:
-                    data4Dstr = multiruns[0]
-                    fix_stages_dict = OrderedDict([("fix", partial(run_fix_singlerun,
-                                                                   path=args.output_dir,
-                                                                   subject="sub-%s" % subject_label,
-                                                                   fMRI_data=data4Dstr,
-                                                                   hp=hp,
-                                                                   n_cpus=args.n_cpus))
-                                                   ])
-                    for stage, stage_func in fix_stages_dict.iteritems():
-                        if stage in args.stages:
-                            stage_func()
-        except:
-            logging.error("FIX stage ended with error. Please check. Continuing...")
 
         # task fmris
         tasks =[]
