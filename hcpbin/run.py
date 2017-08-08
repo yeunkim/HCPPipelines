@@ -332,36 +332,6 @@ def run_melodic_singlerun(**args):
     elapsed = elapsed / 60
     logging.info("Finished running melodic single run. Time duration: {0} minutes".format(str(elapsed)))
 
-def run_task_fmri_analysis_clean(**args):
-    print(args)
-    args.update(os.environ)
-    cmd = '{HCPPIPEDIR}/TaskfMRIAnalysis/TaskfMRIAnalysis.sh ' + \
-        '--path={path} ' + \
-        '--subject={subject} ' + \
-        '--lvl1tasks={lvl1tasks} ' + \
-        '--lvl1fsfs={lvl1fsfs} ' + \
-        '--lvl2task={lvl2task} ' + \
-        '--lvl2fsf={lvl2fsf} ' + \
-        '--lowresmesh={lowresmesh} ' + \
-        '--grayordinatesres="{grayordinatesres:s}" ' + \
-        '--origsmoothingFWHM="{origsmoothingFWHM}" ' + \
-        '--confound={confound} ' + \
-        '--finalsmoothingFWHM={finalsmoothingFWHM} ' + \
-        '--temporalfilter={temporalfilter} ' + \
-        '--vba={vba} ' + \
-        '--regname={regname} ' + \
-        '--parcellation={parcellation} ' + \
-        '--parcellationfile={parcellationfile} ' + \
-        '--printcom=""'
-    cmd = cmd.format(**args)
-    t = time.time()
-    logging.info(" {0} : Running TaskfMRIAnalysisClean".format(datetime.datetime.utcnow().strftime("%a %b %d %H:%M:%S %Z %Y")))
-    logging.info(cmd)
-    # print('\n', cmd, '\n')
-    run(cmd, cwd=args["path"], env={"OMP_NUM_THREADS": str(args["n_cpus"])}, stage='TaskfMRIAnalysisClean', filename='_{0}'.format(args["lvl1tasks"]),subject=args["subject"])
-    elapsed = time.time() - t
-    elapsed = elapsed / 60
-    logging.info("Finished running TaskfMRIAnalysisClean. Time duration: {0} minutes".format(str(elapsed)))
 
 def func_stages(stages_dict):
     for stage, stage_func in stages_dict.iteritems():
@@ -908,15 +878,15 @@ if args.analysis_level == "participant":
                                                                                       parcellationfile=ParcellationFileList,
                                                                                       n_cpus=args.n_cpus
                                                                                       ))])
-                        Process(target=func_stages, args=(func_stages_dict,)).start()
-                        # for stage, stage_func in func_stages_dict.iteritems():
-                        #     if stage in args.stages:
-                        #         try:
-                        #             # stage_func()
-                        #         except:
-                        #             logging.error(
-                        #                 "{0} stage ended with error. Please check. Continuing...".format(stage))
-                        #             #
+                        # Process(target=func_stages, args=(func_stages_dict,)).start()
+                        for stage, stage_func in func_stages_dict.iteritems():
+                            if stage in args.stages:
+                                try:
+                                    stage_func()
+                                except:
+                                    logging.error(
+                                        "{0} stage ended with error. Please check. Continuing...".format(stage))
+                                    #
 
     elapsed = time.time() - starttime
     elapsed = elapsed / 60
