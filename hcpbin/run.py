@@ -780,7 +780,7 @@ if args.analysis_level == "participant":
                                                                        subject="sub-%s" % subject_label,
                                                                        fMRI_data=fmri,
                                                                        hp=hp,
-                                                                       concatName=fmri,
+                                                                       concatName=os.path.basename(fmri).split('.')[0],
                                                                        n_cpus=args.n_cpus))
                                                    ])
 
