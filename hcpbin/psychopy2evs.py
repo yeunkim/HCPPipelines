@@ -96,7 +96,11 @@ def get_face(logdir, run, outdir=None):
 
 
 def get_carit(logdir, run, outdir=None):
-    log = [x for x in os.listdir(logdir) if x.endswith('.csv') and 'wide' in x and 'CARIT' in x][-1]
+    try:
+        log = [x for x in os.listdir(logdir) if x.endswith('.csv') and 'wide' in x and 'CARIT' in x][-1]
+    except IndexError:
+        print('Warning: Unable to find CARIT run 01')
+        return
     df = pd.read_csv(os.path.join(logdir, log))
     hit = []
     miss = []
@@ -148,6 +152,8 @@ def gen_onsets(subjs, logdir, outdir):
             # get_gamble(subjlogs, run, os.path.join(subjout, 'task002_run%03d'%i))
             get_carit(subjlogs, run, os.path.join(subjout, 'task-carit_run-%02d' % i))
         except OSError:
+            print('Warning: Unable to find CARIT run %d' % i)
+        except:
             print('Warning: Unable to find CARIT run %d' % i)
 
 
