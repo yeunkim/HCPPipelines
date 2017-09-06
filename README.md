@@ -100,7 +100,7 @@ If you are considering commercial use of this App please consult the relevant li
 
 ### TODO
 
-   - [ ] Add DiffusionProcessing stage
+   - [x] Add DiffusionProcessing stage
    - [ ] More testing for fMRI with different resolution
    - [ ] Run fMRI runs in parallel (when n_cpus present)
    - [ ] Add support for TOPUP and GE fieldmaps for structural scans (please get in touch if you can provide sample data)
@@ -108,7 +108,7 @@ If you are considering commercial use of this App please consult the relevant li
    - [ ] Avoid copying fsaverage folder for every participant
    - [ ] Add ICA FIX stage
    - [ ] Add group level analysis
-   - [ ] Add task fMRI model fitting
+   - [x] Add task fMRI model fitting
 
 [HCP]: http://www.humanconnectome.org
 [GlasserEtAl]: http://www.ncbi.nlm.nih.gov/pubmed/23668970
