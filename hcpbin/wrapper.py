@@ -24,7 +24,7 @@ if __name__ == '__main__':
                                           "'skip'.")
     parser.add_argument('outputdir', help="Output directory -- must exist prior to running")
     parser.add_argument('-subjID', dest='subjID', help="Subject ID/prefix (must not contain hyphens or underscores", required=True)
-    parser.add_argument('-dataset', dest='dataset', help="Data set name", required=False, default='/')
+    parser.add_argument('-dataset', dest='dataset', help="Data set name", required=False)
     parser.add_argument('--license_key', dest='license_key', help="FreeSurfer license key", required=True)
     parser.add_argument('--n_cpus', help='Number of CPUs/cores available to use.',
                         default=1, type=int)
@@ -55,12 +55,16 @@ if __name__ == '__main__':
             # subprocess.call(psychopy, shell=True)
 
         #TODO: take out conversions?
+        if args.dataset:
+            dataset = " -dataset {0}".format(args.dataset)
+        else:
+            dataset = ""
         if not args.bidsdir and not os.path.exists(args.outputdir + '/' + args.subjID + '_bids' ):
             bidsconv = "python /bidsconversion/bin/run.py " + \
                        args.sourcedir + ' ' + \
                        args.outputdir + \
                        ' -subj ' + args.subjID + \
-                       ' -dataset ' + args.dataset
+                       dataset
             subprocess.call(bidsconv, shell=True)
 
         outputFolder = args.subjID+'_output'
@@ -69,12 +73,17 @@ if __name__ == '__main__':
 
         # move previously created log files into logs directory
         logsfpath = os.path.join(args.outputdir, outputFolder, "logs")
-        if not os.path.exists(logsfpath):
-            os.mkdir(logsfpath)
-            shutil.move(os.path.join(args.outputdir, "bids_conversion_logs"), os.path.join(logsfpath, "bids_conversion_logs"))
+        try:
+            if not os.path.exists(logsfpath):
+                os.mkdir(logsfpath)
+                shutil.move(os.path.join(args.outputdir, "bids_conversion_logs"), os.path.join(logsfpath, "bids_conversion_logs"))
+        except:
+            print("BIDS conversion logs not found. Not a problem! Starting processing...")
 
-        if not args.bidsdir:
+        if not args.bidsdir and args.dataset:
             bidsDataSet = os.path.join(args.outputdir, args.subjID+'_bids/'+args.dataset)
+        if not args.bidsdir and not args.dataset:
+            bidsDataSet = os.path.join(args.outputdir, args.subjID + '_bids/')
         else:
             bidsDataSet = args.bidsdir
         runpy = "/hcpbin/run.py " + \
