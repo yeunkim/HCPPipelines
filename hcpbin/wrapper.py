@@ -19,10 +19,12 @@ if __name__ == '__main__':
 
     parser = argparse.ArgumentParser(description= "Wrapper script: runs image data conversion, organization, and image processing",
                                      formatter_class=RawTextHelpFormatter)
-    parser.add_argument('sourcedir', help="Path to DICOM source directory, where directories of raw image files are located")
+    parser.add_argument('sourcedir', help="Path to DICOM source directory, where directories of raw image files are located."
+                                          "If you already have BIDS-compatible dataset, set this positional argument to"
+                                          "'skip'.")
     parser.add_argument('outputdir', help="Output directory -- must exist prior to running")
     parser.add_argument('-subjID', dest='subjID', help="Subject ID/prefix (must not contain hyphens or underscores", required=True)
-    parser.add_argument('-dataset', dest='dataset', help="Data set name", required=True)
+    parser.add_argument('-dataset', dest='dataset', help="Data set name", required=False, default='/')
     parser.add_argument('--license_key', dest='license_key', help="FreeSurfer license key", required=True)
     parser.add_argument('--n_cpus', help='Number of CPUs/cores available to use.',
                         default=1, type=int)
@@ -38,6 +40,9 @@ if __name__ == '__main__':
                                                'This will generate EV files compatible for FSL task fmri analysis', required=False)
     parser.add_argument('--fslEV', help='Indicates that the EV folder path given contains FSL-compatible EV files. \n'
                                         'No conversion is required.', action='store_true', required=False)
+    parser.add_argument('--bids', dest='bidsdir', help='If you have already converted your data according to BIDS specs,\n'
+                                                       'then you can define the path to the converted files using this flag.',
+                        required=False)
 
     args = parser.parse_args()
 
@@ -49,20 +54,35 @@ if __name__ == '__main__':
             # psychopy = "python /psychopy2evs.py -l " + args.EV + " -o " + args.outputdir + " -s " + args.subjID
             # subprocess.call(psychopy, shell=True)
 
-        if not os.path.exists(args.outputdir + '/' + args.subjID + '_bids' ):
-            bidsconv = "python /bidsconversion/bin/run.py " + args.sourcedir + ' ' + args.outputdir + ' /dcm2niix/build/bin/dcm2niibatch ' + '-subj ' + args.subjID + ' -dataset ' + args.dataset
+        #TODO: take out conversions?
+        if not args.bidsdir and not os.path.exists(args.outputdir + '/' + args.subjID + '_bids' ):
+            bidsconv = "python /bidsconversion/bin/run.py " + \
+                       args.sourcedir + ' ' + \
+                       args.outputdir + \
+                       ' -subj ' + args.subjID + \
+                       ' -dataset ' + args.dataset
             subprocess.call(bidsconv, shell=True)
 
-        if not os.path.exists(args.outputdir+ '/' + args.subjID+'_output'):
-            os.mkdir(args.outputdir+ '/' + args.subjID+'_output')
+        outputFolder = args.subjID+'_output'
+        if not os.path.exists(os.path.join(args.outputdir, outputFolder)):
+            os.mkdir(os.path.join(args.outputdir, outputFolder))
 
         # move previously created log files into logs directory
-        logsfpath = os.path.join(args.outputdir, args.subjID+'_output', "logs")
+        logsfpath = os.path.join(args.outputdir, outputFolder, "logs")
         if not os.path.exists(logsfpath):
             os.mkdir(logsfpath)
             shutil.move(os.path.join(args.outputdir, "bids_conversion_logs"), os.path.join(logsfpath, "bids_conversion_logs"))
 
-        runpy = "/hcpbin/run.py " + args.outputdir+'/'+args.subjID+'_bids/'+args.dataset + ' '+ args.outputdir+'/'+args.subjID+'_output '+" participant --n_cpus " + str(args.n_cpus) + ' ' + '--license_key ' + args.license_key + ' --stages ' + ' '.join(args.stages)
+        if not args.bidsdir:
+            bidsDataSet = os.path.join(args.outputdir, args.subjID+'_bids/'+args.dataset)
+        else:
+            bidsDataSet = args.bidsdir
+        runpy = "/hcpbin/run.py " + \
+                bidsDataSet + ' ' + \
+                os.path.join(args.outputdir, outputFolder) + \
+                " participant --n_cpus " + str(args.n_cpus) + ' ' + \
+                '--license_key ' + args.license_key + \
+                ' --stages ' + ' '.join(args.stages)
         subprocess.call(runpy, shell=True)
 
     except:

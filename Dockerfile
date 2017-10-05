@@ -124,7 +124,7 @@ RUN cd / && git clone https://github.com/yeunkim/dcm2niix.git && \
 
 # Get bidsconversion
 RUN cd / && git clone https://github.com/yeunkim/bidsconversion.git && \
-    cd bidsconversion && git checkout     spemaps
+    cd bidsconversion && git checkout paper
 
 # Install MCR 2012a v717
 RUN apt-get install unzip
