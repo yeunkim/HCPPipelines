@@ -141,7 +141,7 @@ RUN sh -c 'echo "deb http://cran.rstudio.com/bin/linux/ubuntu trusty/" >> /etc/a
 
 # Get ICA FIX
 RUN cd / && wget http://users.bmap.ucla.edu/~yeunkim/ftp/fix1.065b.tar.gz -O fix.tar.gz && \
-    tar xvfz fix.tar.gz
+    tar xvf fix.tar.gz
 RUN mv /fix1.065b /fix1.06a
 
 #COPY /opt/HCP-Pipelines/ICAFIX/hcp_fix.for_fix1.06a /fix1.06a
