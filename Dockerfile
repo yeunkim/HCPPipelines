@@ -140,9 +140,9 @@ RUN sh -c 'echo "deb http://cran.rstudio.com/bin/linux/ubuntu trusty/" >> /etc/a
     apt-get -y install r-base
 
 # Get ICA FIX
-RUN cd / && wget http://users.bmap.ucla.edu/~yeunkim/ftp/fix1.065.dhcp10.tar.gz -O fix.tar.gz && \
+RUN cd / && wget http://users.bmap.ucla.edu/~yeunkim/ftp/fix1.065b.tar.gz -O fix.tar.gz && \
     tar xvfz fix.tar.gz
-RUN mv /fix1.065 /fix1.06a
+RUN mv /fix1.065b /fix1.06a
 
 #COPY /opt/HCP-Pipelines/ICAFIX/hcp_fix.for_fix1.06a /fix1.06a
 
@@ -167,6 +167,7 @@ RUN chmod +x /fsf_templates/scripts/generate_level1_fsf.sh
 #COPY psychopy2evs.py /psychopy2evs.py
 #RUN chmod +x /psychopy2evs.py
 
+COPY read_avw_img.m /usr/share/fsl/5.0/etc/matlab/read_avw_img.m
 
 COPY TaskfMRIAnalysis/TaskfMRIAnalysis.v1.0.sh /opt/HCP-Pipelines/TaskfMRIAnalysis/TaskfMRIAnalysis.v1.0.sh
 COPY TaskfMRIAnalysis/TaskfMRIAnalysis.v2.0.sh /opt/HCP-Pipelines/TaskfMRIAnalysis/TaskfMRIAnalysis.v2.0.sh

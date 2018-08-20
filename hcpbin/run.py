@@ -742,51 +742,51 @@ if args.analysis_level == "participant":
         try:
             pathtofunc = os.path.join(args.output_dir, "sub-%s" % subject_label, "MNINonLinear", "Results")
             funcfolders = [f for f in os.listdir(pathtofunc) if os.path.isdir(os.path.join(pathtofunc, f))]
-            # tasknames = [f.split("task-")[1].split("_")[0] for f in funcfolders]
-            # for task in set(tasknames):
-            #     multiruns = [ os.path.join(pathtofunc, f, "{0}.nii.gz".format(f)) for f in funcfolders if task in f]
-            #     if len(multiruns) > 1:
-            #         data4Dstr = "@".join(multiruns)
-            #         concatName = "task-{0}_multirun".format(task)
-            #         melodic_stages_dict = OrderedDict([("melodic", partial(run_melodic,
-            #                                                                path=args.output_dir,
-            #                                                                subject="sub-%s"%subject_label,
-            #                                                                fMRI_data=data4Dstr,
-            #                                                                hp=hp,
-            #                                                                concatName=concatName,
-            #                                                                n_cpus=args.n_cpus))
-            #                                            ])
-            #
-            #         for stage, stage_func in melodic_stages_dict.iteritems():
-            #             if stage in args.stages:
-            #                 stage_func()
-            #     elif len(multiruns) == 1:
-            #         data4Dstr = multiruns[0]
-            #         melodic_stages_dict = OrderedDict([("melodic", partial(run_melodic_singlerun,
-            #                                                                path=args.output_dir,
-            #                                                                subject="sub-%s" % subject_label,
-            #                                                                fMRI_data=data4Dstr,
-            #                                                                hp=hp,
-            #                                                                n_cpus=args.n_cpus))
-            #                                            ])
-            #
-            #         for stage, stage_func in melodic_stages_dict.iteritems():
-            #             if stage in args.stages:
-            #                 stage_func()
-            funcfiles = [os.path.join(pathtofunc, f, "{0}.nii.gz".format(f)) for f in os.listdir(pathtofunc) if os.path.isdir(os.path.join(pathtofunc, f))]
-            for fmri in funcfiles:
-                melodic_stages_dict = OrderedDict([("melodic", partial(run_melodic,
-                                                                       path=args.output_dir,
-                                                                       subject="sub-%s" % subject_label,
-                                                                       fMRI_data=fmri,
-                                                                       hp=hp,
-                                                                       concatName=os.path.basename(fmri).split('.')[0],
-                                                                       n_cpus=args.n_cpus))
-                                                   ])
+            tasknames = [f.split("task-")[1].split("_")[0] for f in funcfolders]
+            for task in set(tasknames):
+                multiruns = [ os.path.join(pathtofunc, f, "{0}.nii.gz".format(f)) for f in funcfolders if task in f]
+                if len(multiruns) > 1:
+                    data4Dstr = "@".join(multiruns)
+                    concatName = "task-{0}_multirun".format(task)
+                    melodic_stages_dict = OrderedDict([("melodic", partial(run_melodic,
+                                                                           path=args.output_dir,
+                                                                           subject="sub-%s"%subject_label,
+                                                                           fMRI_data=data4Dstr,
+                                                                           hp=hp,
+                                                                           concatName=concatName,
+                                                                           n_cpus=args.n_cpus))
+                                                       ])
 
-                for stage, stage_func in melodic_stages_dict.iteritems():
-                    if stage in args.stages:
-                        stage_func()
+                    for stage, stage_func in melodic_stages_dict.iteritems():
+                        if stage in args.stages:
+                            stage_func()
+                elif len(multiruns) == 1:
+                    data4Dstr = multiruns[0]
+                    melodic_stages_dict = OrderedDict([("melodic", partial(run_melodic_singlerun,
+                                                                           path=args.output_dir,
+                                                                           subject="sub-%s" % subject_label,
+                                                                           fMRI_data=data4Dstr,
+                                                                           hp=hp,
+                                                                           n_cpus=args.n_cpus))
+                                                       ])
+
+                    for stage, stage_func in melodic_stages_dict.iteritems():
+                        if stage in args.stages:
+                            stage_func()
+            # funcfiles = [os.path.join(pathtofunc, f, "{0}.nii.gz".format(f)) for f in os.listdir(pathtofunc) if os.path.isdir(os.path.join(pathtofunc, f))]
+            # for fmri in funcfiles:
+            #     melodic_stages_dict = OrderedDict([("melodic", partial(run_melodic,
+            #                                                            path=args.output_dir,
+            #                                                            subject="sub-%s" % subject_label,
+            #                                                            fMRI_data=fmri,
+            #                                                            hp=hp,
+            #                                                            concatName=os.path.basename(fmri).split('.')[0],
+            #                                                            n_cpus=args.n_cpus))
+            #                                        ])
+            #
+            #     for stage, stage_func in melodic_stages_dict.iteritems():
+            #         if stage in args.stages:
+            #             stage_func()
         except:
             # print(traceback.print_exc(file=sys.stdout))
             logging.error("MELODIC stage ended with error. Please check. Continuing...")
