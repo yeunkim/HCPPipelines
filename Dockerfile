@@ -174,6 +174,7 @@ RUN chmod +x /opt/HCP-Pipelines/TaskfMRIAnalysis/TaskfMRIAnalysis.v1.0.sh
 RUN chmod +x /opt/HCP-Pipelines/TaskfMRIAnalysis/TaskfMRIAnalysis.v2.0.sh
 
 COPY version /version
+COPY coeff.grad /coeff.grad
 
 ENTRYPOINT ["/hcpbin/wrapper.py"]
 #ENTRYPOINT ["/run.py"]

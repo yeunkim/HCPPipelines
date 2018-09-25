@@ -82,7 +82,7 @@ def run_pre_freesurfer(**args):
     '--t1samplespacing="{t1samplespacing}" ' + \
     '--t2samplespacing="{t2samplespacing}" ' + \
     '--unwarpdir="{unwarpdir}" ' + \
-    '--gdcoeffs="NONE" ' + \
+    '--gdcoeffs="/coeff.grad" ' + \
     '--avgrdcmethod={avgrdcmethod} ' + \
     '--topupconfig="{HCPPIPEDIR_Config}/b02b0.cnf" ' + \
     '--printcom=""'
@@ -170,7 +170,7 @@ def run_generic_fMRI_volume_processsing(**args):
       '--unwarpdir={unwarpdir} ' + \
       '--fmrires={fmrires:s} ' + \
       '--dcmethod={dcmethod} ' + \
-      '--gdcoeffs="NONE" ' + \
+      '--gdcoeffs="/coeff.grad" ' + \
       '--topupconfig={HCPPIPEDIR_Config}/b02b0.cnf ' + \
       '--printcom="" ' + \
       '--biascorrection={biascorrection} ' + \
@@ -217,7 +217,7 @@ def run_diffusion_processsing(**args):
       '--subject="{subject}" ' + \
       '--echospacing="{echospacing}" '+ \
       '--PEdir={PEdir} ' + \
-      '--gdcoeffs="NONE" ' + \
+      '--gdcoeffs="/coeff.grad" ' + \
       '--dwiname="{dwiname}" ' + \
       '--printcom=""'
     cmd = cmd.format(**args)
@@ -464,7 +464,7 @@ if args.analysis_level == "participant":
                      "echodiff": "NONE",
                      "t1samplespacing": "NONE",
                      "t2samplespacing": "NONE",
-                     "unwarpdir": "NONE",
+                     "unwarpdir": "-z",
                      "avgrdcmethod": "NONE",
                      "SEPhaseNeg": "NONE",
                      "SEPhasePos": "NONE",
