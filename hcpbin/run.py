@@ -464,7 +464,7 @@ if args.analysis_level == "participant":
                      "echodiff": "NONE",
                      "t1samplespacing": "NONE",
                      "t2samplespacing": "NONE",
-                     "unwarpdir": "-z",
+                     "unwarpdir": "z",
                      "avgrdcmethod": "NONE",
                      "SEPhaseNeg": "NONE",
                      "SEPhasePos": "NONE",
