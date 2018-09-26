@@ -176,7 +176,7 @@ RUN chmod +x /opt/HCP-Pipelines/TaskfMRIAnalysis/TaskfMRIAnalysis.v2.0.sh
 COPY version /version
 COPY coeff.grad /coeff.grad
 
-RUN apt-get install python-dev
+RUN apt-get install -y python-dev
 RUN cd / && wget https://github.com/Washington-University/gradunwarp/archive/v1.0.3.zip -O v1.0.3.zip && \
     unzip v1.0.3.zip && cd gradunwarp-1.0.3 && python setup.py install
 
